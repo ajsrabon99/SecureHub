@@ -31,15 +31,15 @@
       color: var(--dark-text);
       background: linear-gradient(135deg, #ffb662 0%, #45b1c9 100%);
       min-height: 100vh;
-      padding-top: 76px;
+      padding-top: 85px;
     }
 
     /* Navbar Styles */
     .navbar {
-      background: rgba(255, 255, 255, 0.98) !important;
+      background: linear-gradient(135deg, #e7c3ff 0%, #ffdcb4 100%);
       backdrop-filter: blur(10px);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      padding: 1rem 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      padding: 0.5rem 0;
       transition: all 0.3s ease;
     }
 
@@ -50,29 +50,41 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      transition: transform 0.3s ease;
     }
 
-    .navbar-brand i {
-      font-size: 1.75rem;
+    .navbar-brand:hover {
+      transform: scale(1.05);
+    }
+
+    .navbar-brand img {
+      height: 95px;
+      width: auto;
+      transition: all 0.3s ease;
     }
 
     .nav-link {
-      color: rgb(178, 202, 255);
-      font-weight: 500;
-      padding: 0.5rem 1rem !important;
+      color: #000000 !important;
+      font-weight: 600;
+      padding: 0.6rem 1.2rem !important;
       margin: 0 0.25rem;
-      border-radius: 0.5rem;
+      border-radius: 0.75rem;
       transition: all 0.3s ease;
       position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
     .nav-link:hover {
       color: var(--primary-color) !important;
-      background-color: rgba(37, 99, 235, 0.05);
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(159, 37, 235, 0.1) 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(37, 99, 235, 0.2);
     }
 
     .nav-link i {
-      margin-right: 0.5rem;
+      font-size: 1.1rem;
     }
 
     /* User Section */
@@ -87,81 +99,132 @@
     .user-info {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1rem;
-      background: var(--light-bg);
+      gap: 0.75rem;
+      padding: 0.6rem 1.2rem;
+      background: rgba(255, 255, 255, 0.9);
       border-radius: 2rem;
+      border: 2px solid rgba(37, 99, 235, 0.2);
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-info:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      border-color: var(--primary-color);
     }
 
     .user-avatar {
-      width: 32px;
-      height: 32px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-weight: 600;
-      font-size: 0.875rem;
+      font-weight: 700;
+      font-size: 1rem;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
     }
 
     .btn-link {
       color: var(--danger-color) !important;
       text-decoration: none;
-      font-weight: 500;
+      font-weight: 600;
       transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
     .btn-link:hover {
-      color: var(--primary-dark) !important;
-      text-decoration: underline;
+      background-color: rgba(239, 68, 68, 0.1);
+      transform: translateX(-2px);
+    }
+
+    .auth-links {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
     }
 
     .auth-links a {
       color: var(--primary-color);
       text-decoration: none;
-      font-weight: 500;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
+      font-weight: 600;
+      padding: 0.6rem 1.2rem;
+      border-radius: 0.75rem;
       transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 2px solid transparent;
     }
 
     .auth-links a:hover {
-      background-color: rgba(37, 99, 235, 0.1);
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(159, 37, 235, 0.15) 100%);
+      border-color: var(--primary-color);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(37, 99, 235, 0.2);
     }
 
-    /* Mobile Menu */
+    .auth-links span {
+      color: rgba(0, 0, 0, 0.3);
+      font-weight: 400;
+    }
+
+    /* Mobile Menu Toggle Button */
     .navbar-toggler {
-      border: none;
+      border: 2px solid var(--primary-color);
       padding: 0.5rem;
-      position: relative;
-      width: 40px;
-      height: 40px;
+      width: 45px;
+      height: 45px;
+      border-radius: 0.5rem;
+      background: rgba(255, 255, 255, 0.9);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .navbar-toggler:hover {
+      background: var(--primary-color);
+      transform: scale(1.05);
+    }
+
+    .navbar-toggler:hover .navbar-toggler-icon,
+    .navbar-toggler:hover .navbar-toggler-icon::before,
+    .navbar-toggler:hover .navbar-toggler-icon::after {
+      background-color: white;
     }
 
     .navbar-toggler:focus {
-      box-shadow: none;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
     }
 
     .navbar-toggler-icon {
       width: 24px;
-      height: 2px;
+      height: 3px;
       background-color: var(--primary-color);
       display: block;
       position: relative;
       transition: all 0.3s ease;
+      border-radius: 2px;
     }
 
     .navbar-toggler-icon::before,
     .navbar-toggler-icon::after {
       content: '';
       width: 24px;
-      height: 2px;
+      height: 3px;
       background-color: var(--primary-color);
       position: absolute;
       left: 0;
       transition: all 0.3s ease;
+      border-radius: 2px;
     }
 
     .navbar-toggler-icon::before {
@@ -172,6 +235,10 @@
       top: 8px;
     }
 
+    .navbar-toggler[aria-expanded="true"] {
+      background: var(--danger-color);
+    }
+
     .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
       background-color: transparent;
     }
@@ -179,26 +246,36 @@
     .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::before {
       transform: rotate(45deg);
       top: 0;
+      background-color: white;
     }
 
     .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::after {
       transform: rotate(-45deg);
       top: 0;
+      background-color: white;
     }
 
     /* Mobile Menu Overlay */
     @media (max-width: 991.98px) {
+      body {
+        padding-top: 75px;
+      }
+
+      .navbar-brand img {
+        height: 75px;
+      }
+
       .navbar-collapse {
         position: fixed;
         top: 0;
         left: -100%;
-        width: 80%;
-        max-width: 320px;
+        width: 85%;
+        max-width: 350px;
         height: 100vh;
-        background: whitesmoke;
-        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
         padding: 2rem 1.5rem;
-        transition: left 0.3s ease;
+        transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 1050;
         overflow-y: auto;
       }
@@ -209,46 +286,60 @@
 
       .mobile-close {
         position: absolute;
-        top: 1rem;
-        right: 1rem;
-        background: none;
+        top: 1.25rem;
+        right: 1.25rem;
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
         border: none;
-        font-size: 1.5rem;
-        color: rgb(255, 145, 145);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 1.25rem;
+        color: white;
         cursor: pointer;
-        padding: 0.5rem;
+        padding: 0;
         line-height: 1;
         transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
       }
 
       .mobile-close:hover {
-        color: var(--danger-color);
-        transform: rotate(90deg);
+        transform: rotate(90deg) scale(1.1);
+        box-shadow: 0 6px 16px rgba(239, 68, 68, 0.6);
+      }
+
+      .mobile-close:active {
+        transform: rotate(90deg) scale(0.95);
       }
 
       .navbar-nav {
-        margin-top: 2rem;
+        margin-top: 3rem;
       }
 
       .nav-item {
-        margin: 0.5rem 0;
+        margin: 0.75rem 0;
       }
 
       .nav-link {
-        padding: 0.75rem 1rem !important;
-        border-left: 3px solid transparent;
-        border-radius: 0.5rem 0 0 0.5rem;
+        padding: 1rem 1.25rem !important;
+        border-left: 4px solid transparent;
+        border-radius: 0.75rem;
+        background: rgba(255, 255, 255, 0.5);
+        margin-bottom: 0.5rem;
       }
 
       .nav-link:hover {
         border-left-color: var(--primary-color);
-        background-color: rgba(163, 192, 255, 0.724);
+        background: linear-gradient(90deg, rgba(37, 99, 235, 0.15) 0%, rgba(159, 37, 235, 0.05) 100%);
+        transform: translateX(5px);
       }
 
       .navbar-text {
         margin-top: 2rem;
         padding-top: 2rem;
-        border-top: 1px solid var(--border-color);
+        border-top: 2px solid var(--border-color);
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
@@ -257,6 +348,29 @@
       .user-info {
         width: 100%;
         justify-content: flex-start;
+        padding: 0.75rem 1.25rem;
+      }
+
+      .btn-link {
+        width: 100%;
+        justify-content: center;
+        padding: 0.75rem 1.25rem;
+      }
+
+      .auth-links {
+        width: 100%;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .auth-links a {
+        width: 100%;
+        justify-content: center;
+        padding: 0.75rem 1.25rem;
+      }
+
+      .auth-links span {
+        display: none;
       }
 
       /* Backdrop */
@@ -267,30 +381,55 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.6);
         z-index: -1;
+        animation: fadeIn 0.3s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
       }
     }
 
     /* Main Content */
     .container {
       background: white;
-      border-radius: 1rem;
-      padding: 2rem;
+      border-radius: 1.25rem;
+      padding: 2.5rem;
       margin-top: 2rem;
       margin-bottom: 2rem;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      min-height: calc(100vh - 250px);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      min-height: calc(100vh - 280px);
+      animation: slideUp 0.5s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* Footer */
     footer {
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
-      padding: 1.5rem 0;
+      padding: 1.75rem 0;
       text-align: center;
-      border-top: 1px solid var(--border-color);
+      border-top: 2px solid var(--border-color);
       margin-top: auto;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
     }
 
     footer small {
@@ -299,6 +438,8 @@
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
+      font-size: 0.95rem;
+      font-weight: 500;
     }
 
     footer i {
@@ -307,31 +448,76 @@
     }
 
     @keyframes heartbeat {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.2);
+      }
     }
 
     /* Responsive Design */
     @media (max-width: 768px) {
+      .container {
+        padding: 1.75rem;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+        border-radius: 1rem;
+      }
+
+      .navbar-brand {
+        font-size: 1.125rem;
+      }
+    }
+
+    @media (max-width: 480px) {
       body {
         padding-top: 70px;
       }
 
+      .navbar {
+        padding: 0.4rem 0;
+      }
+
+      .navbar-brand img {
+        height: 65px;
+      }
+
       .container {
-        padding: 1.5rem;
+        padding: 1.25rem;
         margin-top: 1rem;
         margin-bottom: 1rem;
         border-radius: 0.75rem;
       }
 
-      .navbar-brand {
-        font-size: 1.25rem;
+      footer {
+        padding: 1.25rem 0.5rem;
+      }
+
+      footer small {
+        font-size: 0.85rem;
+        flex-direction: column;
+        gap: 0.25rem;
       }
     }
 
     /* Smooth Scrolling */
     html {
       scroll-behavior: smooth;
+    }
+
+    /* Accessibility improvements */
+    .navbar-toggler:focus-visible {
+      outline: 3px solid var(--primary-color);
+      outline-offset: 2px;
+    }
+
+    .mobile-close:focus-visible {
+      outline: 3px solid white;
+      outline-offset: 2px;
     }
   </style>
 </head>
@@ -341,15 +527,15 @@
   <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container-fluid px-3 px-lg-5">
       <a class="navbar-brand" href="{% url 'home' %}">
-        <i class="fas fa-shield-alt"></i>
-        SecureHub
+        <img src="https://i.postimg.cc/2y8zFB5W/Whats-App-Image-2025-10-04-at-20-50-09-a590ef98-removebg-preview.png"
+          alt="SecureHub Logo">
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <button class="mobile-close d-lg-none" onclick="closeMenu()">
+        <button class="mobile-close d-lg-none" onclick="closeMenu()" aria-label="Close menu">
           <i class="fas fa-times"></i>
         </button>
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -400,11 +586,9 @@
 
   <!-- Footer -->
   <footer>
-    <!-- <div class="container"> -->
-      <small>
-        &copy; {{ year|default:2025 }} SecureHub. Made with <i class="fas fa-heart"></i> for your security
-      </small>
-    <!-- </div> -->
+    <small>
+      &copy; {{ year|default:2025 }} SecureHub. Made for your security
+    </small>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -419,7 +603,7 @@
 
     // Close menu when clicking on nav links (mobile)
     document.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', function() {
+      link.addEventListener('click', function () {
         if (window.innerWidth < 992) {
           closeMenu();
         }
@@ -427,12 +611,32 @@
     });
 
     // Close menu when clicking on backdrop (mobile)
-    document.getElementById('navbarNav').addEventListener('click', function(e) {
+    document.getElementById('navbarNav').addEventListener('click', function (e) {
       if (e.target === this && this.classList.contains('show')) {
         closeMenu();
       }
     });
+
+    // Prevent body scroll when menu is open
+    const navbarCollapse = document.getElementById('navbarNav');
+    navbarCollapse.addEventListener('show.bs.collapse', function () {
+      document.body.style.overflow = 'hidden';
+    });
+    navbarCollapse.addEventListener('hide.bs.collapse', function () {
+      document.body.style.overflow = '';
+    });
+
+    // Add active state to current page nav link
+    const currentPath = window.location.pathname;
+    document.querySelectorAll('.nav-link').forEach(link => {
+      if (link.getAttribute('href') === currentPath) {
+        link.style.background = 'linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(159, 37, 235, 0.15) 100%)';
+        link.style.color = 'var(--primary-color)';
+      }
+    });
   </script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
 </body>
 
 </html>
