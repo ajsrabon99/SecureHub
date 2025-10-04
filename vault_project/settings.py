@@ -102,3 +102,15 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': '588004184059-3uiagmur663o4egb749o9pf0e3ha59vh.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        }
+    }
+}
