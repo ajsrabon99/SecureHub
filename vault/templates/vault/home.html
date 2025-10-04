@@ -1,0 +1,548 @@
+{% extends "vault/base.html" %}
+{% block title %}Dashboard - SecureHub{% endblock %}
+{% block content %}
+<style>
+    .dashboard-header {
+        margin-bottom: 2.5rem;
+    }
+
+    .welcome-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 1rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+
+    .welcome-section h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .welcome-section p {
+        font-size: 1.1rem;
+        opacity: 0.95;
+        margin: 0;
+    }
+
+    /* Quick Actions */
+    .quick-actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .action-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        padding: 1.25rem 1.5rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .action-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.2);
+        transition: left 0.3s ease;
+    }
+
+    .action-btn:hover::before {
+        left: 100%;
+    }
+
+    .action-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
+    }
+
+    .action-btn i {
+        font-size: 1.5rem;
+    }
+
+    .btn-contact {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .btn-link1 {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+    }
+
+    .btn-password {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        color: white;
+    }
+
+    /* Stats Cards */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 1rem;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
+    }
+
+    .stat-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+
+    .stat-title {
+        font-weight: 600;
+        color: #64748b;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+    }
+
+    .icon-contact {
+        background: rgba(102, 126, 234, 0.1);
+        color: #667eea;
+    }
+
+    .icon-link {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+    }
+
+    .icon-password {
+        background: rgba(245, 158, 11, 0.1);
+        color: #f59e0b;
+    }
+
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.875rem;
+        color: #64748b;
+    }
+
+    /* Recent Items Section */
+    .recent-section {
+        margin-bottom: 2rem;
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1e293b;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .section-title i {
+        font-size: 1.75rem;
+    }
+
+    .view-all-link {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .view-all-link:hover {
+        color: #764ba2;
+        gap: 0.75rem;
+    }
+
+    .items-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .item-card {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        padding: 1.25rem;
+        transition: all 0.3s ease;
+    }
+
+    .item-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .item-header {
+        display: flex;
+        align-items: start;
+        gap: 1rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .item-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .item-content {
+        flex: 1;
+    }
+
+    .item-title {
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 0.25rem;
+        font-size: 1rem;
+    }
+
+    .item-subtitle {
+        color: #64748b;
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .item-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #94a3b8;
+        font-size: 0.8rem;
+    }
+
+    .password-toggle {
+        background: none;
+        border: none;
+        color: #667eea;
+        cursor: pointer;
+        font-size: 0.875rem;
+        padding: 0;
+        margin-left: 0.5rem;
+    }
+
+    .password-toggle:hover {
+        color: #764ba2;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: #94a3b8;
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    .empty-state p {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .welcome-section h2 {
+            font-size: 1.5rem;
+        }
+
+        .welcome-section p {
+            font-size: 1rem;
+        }
+
+        .quick-actions {
+            grid-template-columns: 1fr;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .items-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .section-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+    }
+</style>
+
+<div class="dashboard-header">
+    <!-- Welcome Banner -->
+    <div class="welcome-section">
+        <h2><i class="fas fa-shield-alt"></i> Welcome back, {{ request.user.username }}!</h2>
+        <p>Manage your secure vault with ease</p>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <a href="{% url 'contact_add' %}" class="action-btn btn-contact">
+            <i class="fas fa-user-plus"></i>
+            <span>Add Contact</span>
+        </a>
+        <a href="{% url 'link_add' %}" class="action-btn btn-link1">
+            <i class="fas fa-link"></i>
+            <span>Add Link</span>
+        </a>
+        <a href="{% url 'password_add' %}" class="action-btn btn-password">
+            <i class="fas fa-key"></i>
+            <span>Add Password</span>
+        </a>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-header">
+                <span class="stat-title">Total Contacts</span>
+                <div class="stat-icon icon-contact">
+                    <i class="fas fa-address-book"></i>
+                </div>
+            </div>
+            <div class="stat-value">{{ contacts|length }}</div>
+            <div class="stat-label">Saved contacts</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-header">
+                <span class="stat-title">Total Links</span>
+                <div class="stat-icon icon-link">
+                    <i class="fas fa-link"></i>
+                </div>
+            </div>
+            <div class="stat-value">{{ links|length }}</div>
+            <div class="stat-label">Bookmarked links</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-header">
+                <span class="stat-title">Total Passwords</span>
+                <div class="stat-icon icon-password">
+                    <i class="fas fa-lock"></i>
+                </div>
+            </div>
+            <div class="stat-value">{{ passwords|length }}</div>
+            <div class="stat-label">Secure passwords</div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Contacts -->
+<div class="recent-section">
+    <div class="section-header">
+        <h3 class="section-title">
+            <i class="fas fa-address-book icon-contact"></i>
+            Recent Contacts
+        </h3>
+        <a href="{% url 'contact_list' %}" class="view-all-link">
+            View All <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+
+    {% if contacts %}
+    <div class="items-grid">
+        {% for c in contacts|slice:":3" %}
+        <div class="item-card">
+            <div class="item-header">
+                <div class="item-icon icon-contact">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-title">{{ c.name }}</div>
+                    <div class="item-subtitle">
+                        <i class="fas fa-phone"></i> {{ c.phone }}
+                    </div>
+                    <div class="item-meta">
+                        <i class="fas fa-envelope"></i> {{ c.email|truncatewords:3 }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-address-book"></i>
+        <p>No contacts yet</p>
+        <a href="{% url 'contact_add' %}" class="action-btn btn-contact" style="display: inline-flex;">
+            <i class="fas fa-plus"></i>
+            <span>Add Your First Contact</span>
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Recent Links -->
+<div class="recent-section">
+    <div class="section-header">
+        <h3 class="section-title">
+            <i class="fas fa-link icon-link"></i>
+            Recent Links
+        </h3>
+        <a href="{% url 'link_list' %}" class="view-all-link">
+            View All <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+
+    {% if links %}
+    <div class="items-grid">
+        {% for l in links|slice:":3" %}
+        <div class="item-card">
+            <div class="item-header">
+                <div class="item-icon icon-link">
+                    <i class="fas fa-bookmark"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-title">{{ l.title }}</div>
+                    <div class="item-subtitle">
+                        <a href="{{ l.url }}" target="_blank" style="color: #667eea; text-decoration: none;">
+                            <i class="fas fa-external-link-alt"></i> {{ l.url|truncatewords:4 }}
+                        </a>
+                    </div>
+                    <div class="item-meta">
+                        <i class="fas fa-tag"></i> {{ l.category|default:"Uncategorized" }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-link"></i>
+        <p>No links yet</p>
+        <a href="{% url 'link_add' %}" class="action-btn btn-link1" style="display: inline-flex;">
+            <i class="fas fa-plus"></i>
+            <span>Add Your First Link</span>
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Recent Passwords -->
+<div class="recent-section">
+    <div class="section-header">
+        <h3 class="section-title">
+            <i class="fas fa-key icon-password"></i>
+            Recent Passwords
+        </h3>
+        <a href="{% url 'password_list' %}" class="view-all-link">
+            View All <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+
+    {% if passwords %}
+    <div class="items-grid">
+        {% for p in passwords|slice:":3" %}
+        <div class="item-card">
+            <div class="item-header">
+                <div class="item-icon icon-password">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="item-content">
+                    <div class="item-title">{{ p.service_name }}</div>
+                    <div class="item-subtitle">
+                        <i class="fas fa-user"></i> {{ p.username }}
+                    </div>
+                    <div class="item-meta">
+                        <i class="fas fa-lock"></i>
+                        <span class="password-hidden" id="pwd-{{ forloop.counter }}">••••••••</span>
+                        <button class="password-toggle"
+                            onclick="togglePassword({{ forloop.counter }}, '{{ p.password_decrypted }}')">
+                            <i class="fas fa-eye" id="icon-{{ forloop.counter }}"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-key"></i>
+        <p>No passwords yet</p>
+        <a href="{% url 'password_add' %}" class="action-btn btn-password" style="display: inline-flex;">
+            <i class="fas fa-plus"></i>
+            <span>Add Your First Password</span>
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    function togglePassword(id, password) {
+        const pwdElement = document.getElementById('pwd-' + id);
+        const iconElement = document.getElementById('icon-' + id);
+
+        if (pwdElement.textContent === '••••••••') {
+            pwdElement.textContent = password;
+            iconElement.classList.remove('fa-eye');
+            iconElement.classList.add('fa-eye-slash');
+        } else {
+            pwdElement.textContent = '••••••••';
+            iconElement.classList.remove('fa-eye-slash');
+            iconElement.classList.add('fa-eye');
+        }
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,489 @@
+{% extends "vault/base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}
+{% if form.instance.pk %}Edit Contact{% else %}Add Contact{% endif %} - SecureHub
+{% endblock %}
+
+{% block content %}
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .form-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+
+    .form-icon i {
+        font-size: 2.5rem;
+        color: white;
+    }
+
+    .form-header h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-header p {
+        color: #64748b;
+        font-size: 1rem;
+    }
+
+    .form-card {
+        background: white;
+        border-radius: 1rem;
+        padding: 2.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e2e8f0;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .form-label i {
+        color: #667eea;
+        font-size: 1rem;
+    }
+
+    .form-label .required {
+        color: #ef4444;
+        margin-left: 0.25rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.875rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: #f8fafc;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #667eea;
+        background-color: white;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-control:hover:not(:focus) {
+        border-color: #cbd5e1;
+    }
+
+    .form-control.is-invalid {
+        border-color: #ef4444;
+        background-color: #fef2f2;
+    }
+
+    .form-control.is-invalid:focus {
+        box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+    }
+
+    .error-message {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #ef4444;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+    }
+
+    .error-message i {
+        font-size: 0.875rem;
+    }
+
+    .form-help {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #64748b;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+    }
+
+    .form-help i {
+        color: #94a3b8;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .btn {
+        flex: 1;
+        padding: 0.875rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        box-shadow: 0 4px 6px -1px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px -5px rgba(102, 126, 234, 0.4);
+        color: white;
+    }
+
+    .btn-secondary {
+        background-color: #f8fafc;
+        color: #64748b;
+        border: 2px solid #e2e8f0;
+    }
+
+    .btn-secondary:hover {
+        background-color: #e2e8f0;
+        color: #475569;
+        transform: translateY(-2px);
+    }
+
+    .input-icon {
+        position: relative;
+    }
+
+    .input-icon i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        pointer-events: none;
+    }
+
+    .input-icon .form-control {
+        padding-left: 3rem;
+    }
+
+    .character-count {
+        display: flex;
+        justify-content: flex-end;
+        font-size: 0.8rem;
+        color: #94a3b8;
+        margin-top: 0.5rem;
+    }
+
+    .alert {
+        padding: 1rem 1.25rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .alert-info {
+        background-color: #eff6ff;
+        border: 1px solid #bfdbfe;
+        color: #1e40af;
+    }
+
+    .alert-info i {
+        color: #3b82f6;
+        font-size: 1.25rem;
+    }
+
+    /* Loading State */
+    .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .btn-loading {
+        position: relative;
+        color: transparent;
+    }
+
+    .btn-loading::after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        top: 50%;
+        left: 50%;
+        margin-left: -10px;
+        margin-top: -10px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .form-card {
+            padding: 1.5rem;
+        }
+
+        .form-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .form-icon {
+            width: 60px;
+            height: 60px;
+        }
+
+        .form-icon i {
+            font-size: 2rem;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+
+    /* Animation */
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .form-card {
+        animation: slideUp 0.4s ease-out;
+    }
+</style>
+
+<div class="form-container">
+    <div class="form-header">
+        <div class="form-icon">
+            <i class="fas {% if form.instance.pk %}fa-user-edit{% else %}fa-user-plus{% endif %}"></i>
+        </div>
+        <h2>
+            {% if form.instance.pk %}
+            Edit Contact
+            {% else %}
+            Add New Contact
+            {% endif %}
+        </h2>
+        <p>
+            {% if form.instance.pk %}
+            Update the contact information below
+            {% else %}
+            Fill in the details to add a new contact
+            {% endif %}
+        </p>
+    </div>
+
+    <div class="form-card">
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+            <i class="fas fa-exclamation-circle"></i>
+            <div>
+                {% for error in form.non_field_errors %}
+                {{ error }}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <form method="post" id="contactForm">
+            {% csrf_token %}
+
+            <!-- Name Field -->
+            <div class="form-group">
+                <label for="id_name" class="form-label">
+                    <i class="fas fa-user"></i>
+                    Full Name
+                    <span class="required">*</span>
+                </label>
+                <div class="input-icon">
+                    <i class="fas fa-user"></i>
+                    {{ form.name|add_class:"form-control"|attr:"placeholder:Enter full name"|attr:"maxlength:100" }}
+                </div>
+                {% if form.name.errors %}
+                <div class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>{{ form.name.errors.0 }}</span>
+                </div>
+                {% else %}
+                <div class="form-help">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Enter the contact's full name</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Phone Field -->
+            <div class="form-group">
+                <label for="id_phone" class="form-label">
+                    <i class="fas fa-phone"></i>
+                    Phone Number
+                    <span class="required">*</span>
+                </label>
+                <div class="input-icon">
+                    <i class="fas fa-phone"></i>
+                    {{ form.phone|add_class:"form-control"|attr:"placeholder:+880 1234-567890"|attr:"type:tel" }}
+                </div>
+                {% if form.phone.errors %}
+                <div class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>{{ form.phone.errors.0 }}</span>
+                </div>
+                {% else %}
+                <div class="form-help">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Include country code for international numbers</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Email Field -->
+            <div class="form-group">
+                <label for="id_email" class="form-label">
+                    <i class="fas fa-envelope"></i>
+                    Email Address
+                    <span class="required">*</span>
+                </label>
+                <div class="input-icon">
+                    <i class="fas fa-envelope"></i>
+                    {{ form.email|add_class:"form-control"|attr:"placeholder:example@email.com"|attr:"type:email" }}
+                </div>
+                {% if form.email.errors %}
+                <div class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>{{ form.email.errors.0 }}</span>
+                </div>
+                {% else %}
+                <div class="form-help">
+                    <i class="fas fa-info-circle"></i>
+                    <span>We'll never share this email with anyone</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <a href="{% url 'contact_list' %}" class="btn btn-secondary">
+                    <i class="fas fa-times"></i>
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <i class="fas {% if form.instance.pk %}fa-save{% else %}fa-plus{% endif %}"></i>
+                    {% if form.instance.pk %}Update Contact{% else %}Add Contact{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+
+    {% if form.instance.pk %}
+    <div style="text-align: center; margin-top: 1.5rem;">
+        <a href="{% url 'contact_delete' form.instance.pk %}" class="text-danger"
+            style="text-decoration: none; font-size: 0.9rem;">
+            <i class="fas fa-trash"></i> Delete this contact
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    // Form validation and enhancement
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Add is-invalid class to fields with errors
+        const errorFields = document.querySelectorAll('.error-message');
+        errorFields.forEach(error => {
+            const input = error.previousElementSibling.querySelector('.form-control');
+            if (input) {
+                input.classList.add('is-invalid');
+            }
+        });
+
+        // Form submission with loading state
+        form.addEventListener('submit', function (e) {
+            submitBtn.disabled = true;
+            submitBtn.classList.add('btn-loading');
+        });
+
+        // Remove error styling on input
+        const inputs = document.querySelectorAll('.form-control');
+        inputs.forEach(input => {
+            input.addEventListener('input', function () {
+                this.classList.remove('is-invalid');
+                const errorMsg = this.closest('.form-group').querySelector('.error-message');
+                if (errorMsg) {
+                    errorMsg.style.display = 'none';
+                }
+            });
+        });
+
+        // Phone number formatting helper
+        const phoneInput = document.getElementById('id_phone');
+        if (phoneInput) {
+            phoneInput.addEventListener('blur', function () {
+                let value = this.value.replace(/\D/g, '');
+                if (value.length > 0 && !value.startsWith('0') && !value.startsWith('+')) {
+                    // Auto-add country code if not present
+                    if (value.length === 11 && value.startsWith('1')) {
+                        this.value = '+880' + value;
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+{% endblock %}
