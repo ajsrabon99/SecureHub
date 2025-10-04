@@ -6,7 +6,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 SECRET_KEY = 'django-insecure-q9d$@=+!8infgyr093m4!nmj075b@v50)(i1e22hlcp%9pny6_'
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "securehub-insn.onrender.com"
+]
 
 # Application definition
 INSTALLED_APPS = [
