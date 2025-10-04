@@ -428,7 +428,6 @@
         animation: slideUp 0.4s ease-out;
     }
 </style>
-
 <div class="form-container">
     <div class="form-header">
         <div class="form-icon">
@@ -438,8 +437,7 @@
             {% if form.instance.pk %}Edit Link{% else %}Add New Link{% endif %}
         </h2>
         <p>
-            {% if form.instance.pk %}Update your bookmark information{% else %}Save a new link to your collection{%
-            endif %}
+            {% if form.instance.pk %}Update your bookmark information{% else %}Save a new link to your collection{% endif %}
         </p>
     </div>
 
@@ -453,12 +451,11 @@
 
     <div class="form-card">
         {% if form.non_field_errors %}
-        <div class="alert alert-danger"
-            style="background: #fee2e2; border: 1px solid #fecaca; color: #991b1b; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
+        <div class="alert alert-danger" style="background: #fee2e2; border: 1px solid #fecaca; color: #991b1b; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
             <i class="fas fa-exclamation-circle"></i>
             <div>
                 {% for error in form.non_field_errors %}
-                {{ error }}
+                    {{ error }}
                 {% endfor %}
             </div>
         </div>
@@ -469,95 +466,61 @@
 
             <!-- Title Field -->
             <div class="form-group">
-                <label for="id_title" class="form-label"><i class="fas fa-heading"></i> Link Title <span
-                        class="required">*</span></label>
-                <div class="input-icon">
-                    <i class="fas fa-heading"></i>
-                    {{ form.title|add_class:"form-control"|attr:"placeholder:e.g., My GitHub Profile, Netflix, Google
-                    Drive"|attr:"maxlength:200" }}
-                </div>
+                <label for="id_title" class="form-label"><i class="fas fa-heading"></i> Link Title <span class="required">*</span></label>
+                <input type="text" name="title" id="id_title" class="form-control" 
+                       placeholder="e.g., My GitHub Profile, Netflix, Google Drive" 
+                       maxlength="200"
+                       value="{{ form.title.value|default_if_none:'' }}">
                 {% if form.title.errors %}
-                <div class="error-message"><i class="fas fa-exclamation-circle"></i> <span>{{ form.title.errors.0
-                        }}</span></div>
+                <div class="error-message"><i class="fas fa-exclamation-circle"></i> <span>{{ form.title.errors.0 }}</span></div>
                 {% else %}
-                <div class="form-help"><i class="fas fa-info-circle"></i> <span>Give your link a memorable name</span>
-                </div>
+                <div class="form-help"><i class="fas fa-info-circle"></i> <span>Give your link a memorable name</span></div>
                 {% endif %}
             </div>
 
             <!-- URL Field -->
             <div class="form-group">
-                <label for="id_url" class="form-label"><i class="fas fa-globe"></i> URL Address <span
-                        class="required">*</span></label>
-                <div class="input-icon">
-                    <i class="fas fa-globe"></i>
-                    {{
-                    form.url|add_class:"form-control"|attr:"placeholder:https://example.com"|attr:"type:url"|attr:"id:urlInput"
-                    }}
-                </div>
+                <label for="id_url" class="form-label"><i class="fas fa-globe"></i> URL Address <span class="required">*</span></label>
+                <input type="url" name="url" id="id_url" class="form-control" 
+                       placeholder="https://example.com" 
+                       value="{{ form.url.value|default_if_none:'' }}">
                 {% if form.url.errors %}
-                <div class="error-message"><i class="fas fa-exclamation-circle"></i> <span>{{ form.url.errors.0
-                        }}</span></div>
+                <div class="error-message"><i class="fas fa-exclamation-circle"></i> <span>{{ form.url.errors.0 }}</span></div>
                 {% endif %}
-
-                <div class="url-validation" id="urlValidation"></div>
-
-                <div class="url-preview" id="urlPreview">
-                    <div class="url-preview-title"><i class="fas fa-eye"></i> Preview</div>
-                    <a class="url-preview-link" id="previewLink" href="#" target="_blank" rel="noopener noreferrer">
-                        <i class="fas fa-external-link-alt"></i>
-                        <span id="previewUrl"></span>
-                    </a>
-                </div>
-
-                <div class="form-help"><i class="fas fa-info-circle"></i> <span>Enter the complete URL including
-                        https://</span></div>
+                <div class="form-help"><i class="fas fa-info-circle"></i> <span>Enter the complete URL including https://</span></div>
             </div>
 
             <!-- Category Field -->
             <div class="form-group">
                 <label for="id_category" class="form-label"><i class="fas fa-tag"></i> Category (Optional)</label>
-                <div class="input-icon">
-                    <i class="fas fa-tag"></i>
-                    {{ form.category|add_class:"form-control"|attr:"placeholder:e.g., Work, Social Media, Shopping,
-                    Learning"|attr:"id:categoryInput" }}
-                </div>
+                <input type="text" name="category" id="id_category" class="form-control"
+                       placeholder="e.g., Work, Social Media, Shopping, Learning"
+                       value="{{ form.category.value|default_if_none:'' }}">
                 {% if form.category.errors %}
-                <div class="error-message"><i class="fas fa-exclamation-circle"></i> <span>{{ form.category.errors.0
-                        }}</span></div>
+                <div class="error-message"><i class="fas fa-exclamation-circle"></i> <span>{{ form.category.errors.0 }}</span></div>
                 {% endif %}
 
-                <!-- Quick Category Selection (Manual HTML) -->
+                <!-- Quick Category Selection -->
                 <div class="category-selector" id="categorySelector">
-                    <div class="category-chip" onclick="selectCategory('Work')"><i class="fas fa-briefcase"></i> Work
-                    </div>
-                    <div class="category-chip" onclick="selectCategory('Social Media')"><i class="fas fa-users"></i>
-                        Social Media</div>
-                    <div class="category-chip" onclick="selectCategory('Shopping')"><i class="fas fa-shopping-cart"></i>
-                        Shopping</div>
-                    <div class="category-chip" onclick="selectCategory('Learning')"><i
-                            class="fas fa-graduation-cap"></i> Learning</div>
-                    <div class="category-chip" onclick="selectCategory('Entertainment')"><i class="fas fa-film"></i>
-                        Entertainment</div>
-                    <div class="category-chip" onclick="selectCategory('News')"><i class="fas fa-newspaper"></i> News
-                    </div>
+                    <div class="category-chip" onclick="document.getElementById('id_category').value='Work'"><i class="fas fa-briefcase"></i> Work</div>
+                    <div class="category-chip" onclick="document.getElementById('id_category').value='Social Media'"><i class="fas fa-users"></i> Social Media</div>
+                    <div class="category-chip" onclick="document.getElementById('id_category').value='Shopping'"><i class="fas fa-shopping-cart"></i> Shopping</div>
+                    <div class="category-chip" onclick="document.getElementById('id_category').value='Learning'"><i class="fas fa-graduation-cap"></i> Learning</div>
+                    <div class="category-chip" onclick="document.getElementById('id_category').value='Entertainment'"><i class="fas fa-film"></i> Entertainment</div>
+                    <div class="category-chip" onclick="document.getElementById('id_category').value='News'"><i class="fas fa-newspaper"></i> News</div>
                 </div>
-                <div class="form-help" style="margin-top: 0.75rem;"><i class="fas fa-info-circle"></i> <span>Choose a
-                        category or create your own</span></div>
+                <div class="form-help" style="margin-top: 0.75rem;"><i class="fas fa-info-circle"></i> <span>Choose a category or create your own</span></div>
             </div>
 
             <!-- Notes Field -->
             <div class="form-group">
                 <label for="id_notes" class="form-label"><i class="fas fa-sticky-note"></i> Notes (Optional)</label>
-                <textarea class="form-control" name="notes" id="id_notes"
-                    placeholder="Add any additional notes about this link..."
-                    rows="3">{{ form.notes.value|default:"" }}</textarea>
+                <textarea name="notes" id="id_notes" class="form-control" rows="3"
+                          placeholder="Add any additional notes about this link...">{{ form.notes.value|default_if_none:'' }}</textarea>
                 {% if form.notes.errors %}
-                <div class="error-message"><i class="fas fa-exclamation-circle"></i> <span>{{ form.notes.errors.0
-                        }}</span></div>
+                <div class="error-message"><i class="fas fa-exclamation-circle"></i> <span>{{ form.notes.errors.0 }}</span></div>
                 {% else %}
-                <div class="form-help"><i class="fas fa-info-circle"></i> <span>Optional description or reminder about
-                        this link</span></div>
+                <div class="form-help"><i class="fas fa-info-circle"></i> <span>Optional description or reminder about this link</span></div>
                 {% endif %}
             </div>
 
@@ -570,17 +533,17 @@
                 </button>
             </div>
         </form>
-    </div>
 
-    {% if form.instance.pk %}
-    <div style="text-align: center; margin-top: 1.5rem;">
-        <a href="{% url 'link_delete' form.instance.pk %}" class="text-danger"
-            style="text-decoration: none; font-size: 0.9rem;"
-            onclick="return confirm('Are you sure you want to delete this link?')">
-            <i class="fas fa-trash"></i> Delete this link
-        </a>
+        {% if form.instance.pk %}
+        <div style="text-align: center; margin-top: 1.5rem;">
+            <a href="{% url 'link_delete' form.instance.pk %}" class="text-danger"
+               style="text-decoration: none; font-size: 0.9rem;"
+               onclick="return confirm('Are you sure you want to delete this link?')">
+                <i class="fas fa-trash"></i> Delete this link
+            </a>
+        </div>
+        {% endif %}
     </div>
-    {% endif %}
 </div>
 
 <script>

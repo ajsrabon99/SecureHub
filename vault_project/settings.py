@@ -20,8 +20,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'vault',  # Your app
-    'widget_tweaks',  # For custom form rendering
+    'vault',  
+    'widget_tweaks',  
 
     # Allauth
     'django.contrib.sites',
