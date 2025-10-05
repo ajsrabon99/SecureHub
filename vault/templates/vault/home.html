@@ -1,29 +1,60 @@
 {% extends "vault/base.html" %}
 {% block title %}Dashboard - SecureHub{% endblock %}
 {% block content %}
+
 <style>
+    /* Dashboard Styles */
     .dashboard-header {
-        margin-bottom: 2.5rem;
+        margin-bottom: 3rem;
     }
 
+    /* Welcome Section */
     .welcome-section {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 2rem;
-        border-radius: 1rem;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        border: 1px solid rgba(102, 126, 234, 0.2);
+        border-radius: 20px;
+        padding: 2.5rem;
         margin-bottom: 2rem;
-        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .welcome-section::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(102, 126, 234, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
     }
 
     .welcome-section h2 {
-        font-size: 2rem;
+        font-size: clamp(1.5rem, 4vw, 2rem);
         font-weight: 700;
         margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .welcome-section h2 i {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 1.5rem;
     }
 
     .welcome-section p {
+        color: var(--text-secondary);
         font-size: 1.1rem;
-        opacity: 0.95;
         margin: 0;
     }
 
@@ -32,7 +63,7 @@
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 1rem;
-        margin-bottom: 2.5rem;
+        margin-bottom: 2rem;
     }
 
     .action-btn {
@@ -41,269 +72,391 @@
         justify-content: center;
         gap: 0.75rem;
         padding: 1.25rem 1.5rem;
-        border-radius: 0.75rem;
-        font-weight: 600;
+        border-radius: 16px;
         text-decoration: none;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         overflow: hidden;
+        border: 1px solid transparent;
     }
 
     .action-btn::before {
         content: '';
         position: absolute;
         top: 0;
-        left: -100%;
+        left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(255, 255, 255, 0.2);
-        transition: left 0.3s ease;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
     }
 
     .action-btn:hover::before {
-        left: 100%;
+        opacity: 1;
     }
 
     .action-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .action-btn:active {
+        transform: translateY(-2px);
     }
 
     .action-btn i {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
     }
 
     .btn-contact {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-contact:hover {
+        box-shadow: 0 12px 30px rgba(102, 126, 234, 0.5);
+        color: white;
     }
 
     .btn-link1 {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        box-shadow: 0 8px 20px rgba(240, 147, 251, 0.4);
+    }
+
+    .btn-link1:hover {
+        box-shadow: 0 12px 30px rgba(240, 147, 251, 0.5);
         color: white;
     }
 
     .btn-password {
-        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+        box-shadow: 0 8px 20px rgba(79, 172, 254, 0.4);
+    }
+
+    .btn-password:hover {
+        box-shadow: 0 12px 30px rgba(79, 172, 254, 0.5);
         color: white;
     }
 
-    /* Stats Cards */
+    /* Stats Grid */
     .stats-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 1.5rem;
-        margin-bottom: 2rem;
+        margin-bottom: 3rem;
     }
 
     .stat-card {
-        background: white;
-        border-radius: 1rem;
-        padding: 1.5rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        border: 1px solid #e2e8f0;
-        transition: all 0.3s ease;
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.8) 100%);
+        border: 1px solid rgba(148, 163, 184, 0.1);
+        border-radius: 20px;
+        padding: 2rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
     }
 
     .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
+        transform: translateY(-8px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        border-color: rgba(102, 126, 234, 0.3);
+    }
+
+    .stat-card:hover::before {
+        opacity: 1;
     }
 
     .stat-header {
         display: flex;
-        align-items: center;
         justify-content: space-between;
-        margin-bottom: 1rem;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 1;
     }
 
     .stat-title {
+        font-size: 0.95rem;
+        color: var(--text-secondary);
         font-weight: 600;
-        color: #64748b;
-        font-size: 0.875rem;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.5px;
     }
 
     .stat-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 0.5rem;
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.25rem;
+        font-size: 1.5rem;
+        color: white;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
     }
 
     .icon-contact {
-        background: rgba(102, 126, 234, 0.1);
-        color: #667eea;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
     .icon-link {
-        background: rgba(16, 185, 129, 0.1);
-        color: #10b981;
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     }
 
     .icon-password {
-        background: rgba(245, 158, 11, 0.1);
-        color: #f59e0b;
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     }
 
     .stat-value {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #1e293b;
+        font-size: 3rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
         margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
     }
 
     .stat-label {
-        font-size: 0.875rem;
-        color: #64748b;
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        position: relative;
+        z-index: 1;
     }
 
-    /* Recent Items Section */
+    /* Recent Section */
     .recent-section {
-        margin-bottom: 2rem;
+        margin-bottom: 3rem;
     }
 
     .section-header {
         display: flex;
-        align-items: center;
         justify-content: space-between;
+        align-items: center;
         margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
     }
 
     .section-title {
         font-size: 1.5rem;
         font-weight: 700;
-        color: #1e293b;
+        color: var(--text-primary);
         display: flex;
         align-items: center;
         gap: 0.75rem;
+        margin: 0;
     }
 
     .section-title i {
-        font-size: 1.75rem;
+        font-size: 1.3rem;
     }
 
     .view-all-link {
         color: #667eea;
         text-decoration: none;
         font-weight: 600;
-        font-size: 0.875rem;
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+        background: rgba(102, 126, 234, 0.1);
+        border: 1px solid rgba(102, 126, 234, 0.2);
         transition: all 0.3s ease;
     }
 
     .view-all-link:hover {
+        background: rgba(102, 126, 234, 0.2);
+        transform: translateX(4px);
         color: #764ba2;
-        gap: 0.75rem;
     }
 
+    /* Items Grid */
     .items-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
         gap: 1.5rem;
     }
 
     .item-card {
-        background: white;
-        border: 1px solid #e2e8f0;
-        border-radius: 0.75rem;
-        padding: 1.25rem;
-        transition: all 0.3s ease;
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.8) 100%);
+        border: 1px solid rgba(148, 163, 184, 0.1);
+        border-radius: 16px;
+        padding: 1.5rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .item-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
     }
 
     .item-card:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        transform: translateY(-2px);
+        transform: translateY(-6px);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+        border-color: rgba(102, 126, 234, 0.3);
+    }
+
+    .item-card:hover::before {
+        opacity: 1;
     }
 
     .item-header {
         display: flex;
-        align-items: start;
         gap: 1rem;
-        margin-bottom: 0.75rem;
+        align-items: flex-start;
     }
 
     .item-icon {
-        width: 36px;
-        height: 36px;
-        border-radius: 0.5rem;
+        width: 50px;
+        height: 50px;
+        min-width: 50px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        flex-shrink: 0;
+        font-size: 1.3rem;
+        color: white;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
 
     .item-content {
         flex: 1;
+        min-width: 0;
     }
 
     .item-title {
-        font-weight: 600;
-        color: #1e293b;
-        margin-bottom: 0.25rem;
-        font-size: 1rem;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .item-subtitle {
-        color: #64748b;
-        font-size: 0.875rem;
+        color: var(--text-secondary);
+        font-size: 0.95rem;
         margin-bottom: 0.5rem;
-    }
-
-    .item-meta {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        color: #94a3b8;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .item-subtitle i {
+        font-size: 0.85rem;
+        opacity: 0.7;
+    }
+
+    .item-meta {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .item-meta i {
         font-size: 0.8rem;
+        opacity: 0.7;
+    }
+
+    /* Password Toggle */
+    .password-hidden {
+        font-family: 'Courier New', monospace;
+        letter-spacing: 2px;
+        font-weight: bold;
     }
 
     .password-toggle {
-        background: none;
-        border: none;
+        background: rgba(102, 126, 234, 0.1);
+        border: 1px solid rgba(102, 126, 234, 0.2);
         color: #667eea;
+        padding: 0.25rem 0.5rem;
+        border-radius: 6px;
         cursor: pointer;
-        font-size: 0.875rem;
-        padding: 0;
+        transition: all 0.3s ease;
         margin-left: 0.5rem;
     }
 
     .password-toggle:hover {
-        color: #764ba2;
+        background: rgba(102, 126, 234, 0.2);
+        border-color: rgba(102, 126, 234, 0.4);
+        transform: scale(1.05);
     }
 
+    .password-toggle:active {
+        transform: scale(0.95);
+    }
+
+    /* Empty State */
     .empty-state {
         text-align: center;
-        padding: 3rem 1rem;
-        color: #94a3b8;
+        padding: 4rem 2rem;
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.5) 100%);
+        border: 2px dashed rgba(148, 163, 184, 0.2);
+        border-radius: 20px;
+        margin: 1rem 0;
     }
 
     .empty-state i {
         font-size: 4rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
         margin-bottom: 1rem;
         opacity: 0.5;
     }
 
     .empty-state p {
-        font-size: 1.1rem;
-        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
     }
 
-    /* Responsive */
+    /* Responsive Design */
     @media (max-width: 768px) {
-        .welcome-section h2 {
-            font-size: 1.5rem;
+        .welcome-section {
+            padding: 1.5rem;
         }
 
-        .welcome-section p {
-            font-size: 1rem;
+        .welcome-section h2 {
+            font-size: 1.5rem;
         }
 
         .quick-actions {
@@ -321,15 +474,82 @@
         .section-header {
             flex-direction: column;
             align-items: flex-start;
-            gap: 1rem;
         }
+
+        .stat-value {
+            font-size: 2.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .welcome-section h2 {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            padding: 1rem 1.25rem;
+            font-size: 0.95rem;
+        }
+
+        .stat-card {
+            padding: 1.5rem;
+        }
+
+        .item-card {
+            padding: 1.25rem;
+        }
+    }
+
+    /* Animation */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .welcome-section,
+    .quick-actions,
+    .stats-grid,
+    .recent-section {
+        animation: fadeInUp 0.6s ease-out backwards;
+    }
+
+    .quick-actions {
+        animation-delay: 0.1s;
+    }
+
+    .stats-grid {
+        animation-delay: 0.2s;
+    }
+
+    .recent-section:nth-of-type(1) {
+        animation-delay: 0.3s;
+    }
+
+    .recent-section:nth-of-type(2) {
+        animation-delay: 0.4s;
+    }
+
+    .recent-section:nth-of-type(3) {
+        animation-delay: 0.5s;
     }
 </style>
 
 <div class="dashboard-header">
     <!-- Welcome Banner -->
     <div class="welcome-section">
-        <h2><i class="fas fa-shield-alt"></i> Welcome back, {{ request.user.username }}!</h2>
+        <h2>
+            <i class="fas fa-shield-alt"></i>
+            Welcome back, {{ request.user.username }}!
+        </h2>
         <p>Manage your secure vault with ease</p>
     </div>
 
@@ -409,10 +629,12 @@
                 <div class="item-content">
                     <div class="item-title">{{ c.name }}</div>
                     <div class="item-subtitle">
-                        <i class="fas fa-phone"></i> {{ c.phone }}
+                        <i class="fas fa-phone"></i>
+                        <span>{{ c.phone }}</span>
                     </div>
                     <div class="item-meta">
-                        <i class="fas fa-envelope"></i> {{ c.email|truncatewords:3 }}
+                        <i class="fas fa-envelope"></i>
+                        <span>{{ c.email|truncatewords:3 }}</span>
                     </div>
                 </div>
             </div>
@@ -423,7 +645,7 @@
     <div class="empty-state">
         <i class="fas fa-address-book"></i>
         <p>No contacts yet</p>
-        <a href="{% url 'contact_add' %}" class="action-btn btn-contact" style="display: inline-flex;">
+        <a href="{% url 'contact_add' %}" class="action-btn btn-contact">
             <i class="fas fa-plus"></i>
             <span>Add Your First Contact</span>
         </a>
@@ -454,12 +676,16 @@
                 <div class="item-content">
                     <div class="item-title">{{ l.title }}</div>
                     <div class="item-subtitle">
-                        <a href="{{ l.url }}" target="_blank" style="color: #667eea; text-decoration: none;">
-                            <i class="fas fa-external-link-alt"></i> {{ l.url|truncatewords:4 }}
+                        <i class="fas fa-external-link-alt"></i>
+                        <a href="{{ l.url }}" target="_blank"
+                            style="color: #667eea; text-decoration: none; transition: color 0.3s ease;"
+                            onmouseover="this.style.color='#764ba2'" onmouseout="this.style.color='#667eea'">
+                            {{ l.url|truncatewords:4 }}
                         </a>
                     </div>
                     <div class="item-meta">
-                        <i class="fas fa-tag"></i> {{ l.category|default:"Uncategorized" }}
+                        <i class="fas fa-tag"></i>
+                        <span>{{ l.category|default:"Uncategorized" }}</span>
                     </div>
                 </div>
             </div>
@@ -470,7 +696,7 @@
     <div class="empty-state">
         <i class="fas fa-link"></i>
         <p>No links yet</p>
-        <a href="{% url 'link_add' %}" class="action-btn btn-link1" style="display: inline-flex;">
+        <a href="{% url 'link_add' %}" class="action-btn btn-link1">
             <i class="fas fa-plus"></i>
             <span>Add Your First Link</span>
         </a>
@@ -501,13 +727,15 @@
                 <div class="item-content">
                     <div class="item-title">{{ p.service_name }}</div>
                     <div class="item-subtitle">
-                        <i class="fas fa-user"></i> {{ p.username }}
+                        <i class="fas fa-user"></i>
+                        <span>{{ p.username }}</span>
                     </div>
                     <div class="item-meta">
                         <i class="fas fa-lock"></i>
                         <span class="password-hidden" id="pwd-{{ forloop.counter }}">••••••••</span>
                         <button class="password-toggle"
-                            onclick="togglePassword({{ forloop.counter }}, '{{ p.password_decrypted }}')">
+                            onclick="togglePassword({{ forloop.counter }}, '{{ p.password_decrypted }}')"
+                            aria-label="Toggle password visibility">
                             <i class="fas fa-eye" id="icon-{{ forloop.counter }}"></i>
                         </button>
                     </div>
@@ -520,7 +748,7 @@
     <div class="empty-state">
         <i class="fas fa-key"></i>
         <p>No passwords yet</p>
-        <a href="{% url 'password_add' %}" class="action-btn btn-password" style="display: inline-flex;">
+        <a href="{% url 'password_add' %}" class="action-btn btn-password">
             <i class="fas fa-plus"></i>
             <span>Add Your First Password</span>
         </a>
@@ -535,6 +763,7 @@
 
         if (pwdElement.textContent === '••••••••') {
             pwdElement.textContent = password;
+            pwdElement.style.fontFamily = "'Courier New', monospace";
             iconElement.classList.remove('fa-eye');
             iconElement.classList.add('fa-eye-slash');
         } else {
@@ -543,6 +772,28 @@
             iconElement.classList.add('fa-eye');
         }
     }
+
+    // Add animation to stats on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.stat-card, .item-card').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+    });
 </script>
 
 {% endblock %}

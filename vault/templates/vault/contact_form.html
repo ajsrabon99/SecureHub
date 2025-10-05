@@ -6,247 +6,436 @@
 {% endblock %}
 
 {% block content %}
+
 <style>
+    /* Form Container */
     .form-container {
-        max-width: 600px;
+        max-width: 700px;
         margin: 0 auto;
+        animation: fadeInUp 0.6s ease-out;
     }
 
+    /* Form Header */
     .form-header {
         text-align: center;
-        margin-bottom: 2.5rem;
+        margin-bottom: 3rem;
     }
 
     .form-icon {
-        width: 80px;
-        height: 80px;
+        width: 90px;
+        height: 90px;
         border-radius: 50%;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         display: flex;
         align-items: center;
         justify-content: center;
         margin: 0 auto 1.5rem;
-        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        position: relative;
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    .form-icon::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        opacity: 0.3;
+        animation: ripple 2s ease-out infinite;
+    }
+
+    @keyframes pulse {
+
+        0%,
+        100% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+    }
+
+    @keyframes ripple {
+        0% {
+            transform: scale(1);
+            opacity: 0.3;
+        }
+
+        100% {
+            transform: scale(1.4);
+            opacity: 0;
+        }
     }
 
     .form-icon i {
-        font-size: 2.5rem;
+        font-size: 2.75rem;
         color: white;
+        position: relative;
+        z-index: 1;
     }
 
     .form-header h2 {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #1e293b;
-        margin-bottom: 0.5rem;
+        font-size: 2.25rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.75rem;
     }
 
     .form-header p {
-        color: #64748b;
-        font-size: 1rem;
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        max-width: 500px;
+        margin: 0 auto;
     }
 
+    /* Form Card */
     .form-card {
-        background: white;
-        border-radius: 1rem;
-        padding: 2.5rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        border: 1px solid #e2e8f0;
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.8) 100%);
+        border-radius: 24px;
+        padding: 3rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(148, 163, 184, 0.1);
+        position: relative;
+        overflow: hidden;
     }
 
+    .form-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+        background-size: 200% 100%;
+        animation: shimmer 3s linear infinite;
+    }
+
+    @keyframes shimmer {
+        0% {
+            background-position: -200% 0;
+        }
+
+        100% {
+            background-position: 200% 0;
+        }
+    }
+
+    /* Form Group */
     .form-group {
-        margin-bottom: 1.5rem;
+        margin-bottom: 2rem;
+        animation: slideInLeft 0.5s ease-out backwards;
     }
 
+    .form-group:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .form-group:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .form-group:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    /* Form Label */
     .form-label {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        font-weight: 600;
-        color: #1e293b;
-        margin-bottom: 0.5rem;
-        font-size: 0.95rem;
+        gap: 0.625rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.75rem;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     .form-label i {
-        color: #667eea;
-        font-size: 1rem;
+        font-size: 1.1rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
     .form-label .required {
         color: #ef4444;
         margin-left: 0.25rem;
+        font-size: 1.2rem;
     }
 
+    /* Input Icon Wrapper */
+    .input-icon {
+        position: relative;
+    }
+
+    .input-icon>i {
+        position: absolute;
+        left: 1.25rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-secondary);
+        pointer-events: none;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        z-index: 1;
+    }
+
+    .input-icon .form-control:focus~i {
+        color: #667eea;
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    /* Form Control */
     .form-control {
         width: 100%;
-        padding: 0.875rem 1rem;
-        border: 2px solid #e2e8f0;
-        border-radius: 0.5rem;
+        padding: 1rem 1.25rem 1rem 3.5rem;
+        border: 2px solid rgba(148, 163, 184, 0.2);
+        border-radius: 14px;
         font-size: 1rem;
-        transition: all 0.3s ease;
-        background-color: #f8fafc;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: rgba(15, 23, 42, 0.5);
+        color: var(--text-primary);
+        position: relative;
+    }
+
+    .form-control::placeholder {
+        color: var(--text-secondary);
+        opacity: 0.6;
+    }
+
+    .form-control:hover:not(:focus) {
+        border-color: rgba(148, 163, 184, 0.4);
+        background: rgba(15, 23, 42, 0.7);
     }
 
     .form-control:focus {
         outline: none;
         border-color: #667eea;
-        background-color: white;
-        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-    }
-
-    .form-control:hover:not(:focus) {
-        border-color: #cbd5e1;
+        background: rgba(15, 23, 42, 0.9);
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15), 0 8px 20px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
     }
 
     .form-control.is-invalid {
         border-color: #ef4444;
-        background-color: #fef2f2;
+        background: rgba(239, 68, 68, 0.05);
     }
 
     .form-control.is-invalid:focus {
-        box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+        box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
     }
 
+    /* Error Message */
     .error-message {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.625rem;
         color: #ef4444;
-        font-size: 0.875rem;
-        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        margin-top: 0.75rem;
+        padding: 0.75rem 1rem;
+        background: rgba(239, 68, 68, 0.1);
+        border-radius: 10px;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        animation: shake 0.4s ease-in-out;
+    }
+
+    @keyframes shake {
+
+        0%,
+        100% {
+            transform: translateX(0);
+        }
+
+        25% {
+            transform: translateX(-5px);
+        }
+
+        75% {
+            transform: translateX(5px);
+        }
     }
 
     .error-message i {
-        font-size: 0.875rem;
+        font-size: 1rem;
     }
 
+    /* Form Help Text */
     .form-help {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        color: #64748b;
+        gap: 0.625rem;
+        color: var(--text-secondary);
         font-size: 0.875rem;
-        margin-top: 0.5rem;
+        margin-top: 0.75rem;
+        padding-left: 0.25rem;
     }
 
     .form-help i {
-        color: #94a3b8;
+        color: #667eea;
+        font-size: 0.9rem;
     }
 
+    /* Alerts */
+    .alert {
+        padding: 1.25rem 1.5rem;
+        border-radius: 14px;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        animation: slideInDown 0.5s ease-out;
+    }
+
+    @keyframes slideInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .alert-danger {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #ef4444;
+    }
+
+    .alert-danger i {
+        font-size: 1.5rem;
+    }
+
+    .alert-info {
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        color: #3b82f6;
+    }
+
+    .alert-info i {
+        font-size: 1.5rem;
+    }
+
+    /* Form Actions */
     .form-actions {
         display: flex;
-        gap: 1rem;
-        margin-top: 2rem;
-        padding-top: 2rem;
-        border-top: 1px solid #e2e8f0;
+        gap: 1.25rem;
+        margin-top: 2.5rem;
+        padding-top: 2.5rem;
+        border-top: 1px solid rgba(148, 163, 184, 0.1);
+        animation: fadeInUp 0.5s ease-out 0.4s backwards;
     }
 
+    /* Buttons */
     .btn {
         flex: 1;
-        padding: 0.875rem 1.5rem;
-        border-radius: 0.5rem;
-        font-weight: 600;
-        font-size: 1rem;
+        padding: 1.125rem 2rem;
+        border-radius: 14px;
+        font-weight: 700;
+        font-size: 1.05rem;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 0.5rem;
-        transition: all 0.3s ease;
+        gap: 0.75rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         border: none;
         cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .btn:hover::before {
+        opacity: 1;
     }
 
     .btn-primary {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        box-shadow: 0 4px 6px -1px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
     }
 
     .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px -5px rgba(102, 126, 234, 0.4);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 32px rgba(102, 126, 234, 0.5);
         color: white;
     }
 
+    .btn-primary:active {
+        transform: translateY(-1px);
+    }
+
     .btn-secondary {
-        background-color: #f8fafc;
-        color: #64748b;
-        border: 2px solid #e2e8f0;
+        background: rgba(148, 163, 184, 0.1);
+        color: var(--text-primary);
+        border: 2px solid rgba(148, 163, 184, 0.2);
     }
 
     .btn-secondary:hover {
-        background-color: #e2e8f0;
-        color: #475569;
-        transform: translateY(-2px);
-    }
-
-    .input-icon {
-        position: relative;
-    }
-
-    .input-icon i {
-        position: absolute;
-        left: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #94a3b8;
-        pointer-events: none;
-    }
-
-    .input-icon .form-control {
-        padding-left: 3rem;
-    }
-
-    .character-count {
-        display: flex;
-        justify-content: flex-end;
-        font-size: 0.8rem;
-        color: #94a3b8;
-        margin-top: 0.5rem;
-    }
-
-    .alert {
-        padding: 1rem 1.25rem;
-        border-radius: 0.5rem;
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-
-    .alert-info {
-        background-color: #eff6ff;
-        border: 1px solid #bfdbfe;
-        color: #1e40af;
-    }
-
-    .alert-info i {
-        color: #3b82f6;
-        font-size: 1.25rem;
+        background: rgba(148, 163, 184, 0.2);
+        border-color: rgba(148, 163, 184, 0.4);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     }
 
     /* Loading State */
     .btn:disabled {
         opacity: 0.6;
         cursor: not-allowed;
+        transform: none !important;
     }
 
     .btn-loading {
-        position: relative;
-        color: transparent;
+        color: transparent !important;
     }
 
     .btn-loading::after {
         content: '';
         position: absolute;
-        width: 20px;
-        height: 20px;
+        width: 24px;
+        height: 24px;
         top: 50%;
         left: 50%;
-        margin-left: -10px;
-        margin-top: -10px;
+        margin-left: -12px;
+        margin-top: -12px;
         border: 3px solid rgba(255, 255, 255, 0.3);
         border-top-color: white;
         border-radius: 50%;
@@ -259,14 +448,123 @@
         }
     }
 
-    /* Responsive */
+    /* Delete Link */
+    .delete-link {
+        text-align: center;
+        margin-top: 2rem;
+        animation: fadeIn 0.5s ease-out 0.5s backwards;
+    }
+
+    .delete-link a {
+        color: #ef4444;
+        text-decoration: none;
+        font-size: 0.95rem;
+        font-weight: 600;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        background: rgba(239, 68, 68, 0.05);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .delete-link a:hover {
+        background: rgba(239, 68, 68, 0.1);
+        border-color: rgba(239, 68, 68, 0.4);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
+    }
+
+    /* Success Animation */
+    @keyframes success {
+        0% {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+
+        50% {
+            transform: scale(1.1);
+        }
+
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    /* Fade In Up Animation */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* Responsive Design */
     @media (max-width: 768px) {
+        .form-container {
+            padding: 0 1rem;
+        }
+
         .form-card {
-            padding: 1.5rem;
+            padding: 2rem 1.5rem;
+            border-radius: 20px;
         }
 
         .form-header h2 {
+            font-size: 1.75rem;
+        }
+
+        .form-icon {
+            width: 70px;
+            height: 70px;
+        }
+
+        .form-icon i {
+            font-size: 2.25rem;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+        }
+
+        .btn {
+            width: 100%;
+        }
+
+        .form-control {
+            padding: 0.875rem 1rem 0.875rem 3.25rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .form-header h2 {
             font-size: 1.5rem;
+        }
+
+        .form-header p {
+            font-size: 1rem;
+        }
+
+        .form-card {
+            padding: 1.75rem 1.25rem;
         }
 
         .form-icon {
@@ -278,30 +576,10 @@
             font-size: 2rem;
         }
 
-        .form-actions {
-            flex-direction: column;
-        }
-
         .btn {
-            width: 100%;
+            padding: 1rem 1.5rem;
+            font-size: 0.95rem;
         }
-    }
-
-    /* Animation */
-    @keyframes slideUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .form-card {
-        animation: slideUp 0.4s ease-out;
     }
 </style>
 
@@ -321,7 +599,7 @@
             {% if form.instance.pk %}
             Update the contact information below
             {% else %}
-            Fill in the details to add a new contact
+            Fill in the details to add a new contact to your vault
             {% endif %}
         </p>
     </div>
@@ -338,100 +616,95 @@
         </div>
         {% endif %}
 
-        <form method="post" id="contactForm">
+        <form method="post" id="contactForm" autocomplete="off">
             {% csrf_token %}
 
-            <!-- Name Field -->
-            <div class="form-group">
-                <label for="id_name" class="form-label">
-                    <i class="fas fa-user"></i>
-                    Full Name
-                    <span class="required">*</span>
-                </label>
-                <div class="input-icon">
-                    <i class="fas fa-user"></i>
-                    {{ form.name|add_class:"form-control"|attr:"placeholder:Enter full name"|attr:"maxlength:100" }}
-                </div>
-                {% if form.name.errors %}
-                <div class="error-message">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <span>{{ form.name.errors.0 }}</span>
-                </div>
-                {% else %}
-                <div class="form-help">
-                    <i class="fas fa-info-circle"></i>
-                    <span>Enter the contact's full name</span>
-                </div>
-                {% endif %}
-            </div>
+<!-- Name Field -->
+<div class="form-group">
+    <label for="id_name" class="form-label">
+        <i class="fas fa-user"></i> Full Name <span class="required">*</span>
+    </label>
+    <div class="input-icon">
+        {{ form.name|add_class:"form-control"|attr:"placeholder:Enter full name"|attr:"maxlength:100"|attr:"autocomplete:off" }}
+        <i class="fas fa-user"></i>
+    </div>
+    {% if form.name.errors %}
+        <div class="error-message">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>{{ form.name.errors.0 }}</span>
+        </div>
+    {% else %}
+        <div class="form-help">
+            <i class="fas fa-info-circle"></i>
+            <span>Enter the contact's full name</span>
+        </div>
+    {% endif %}
+</div>
 
-            <!-- Phone Field -->
-            <div class="form-group">
-                <label for="id_phone" class="form-label">
-                    <i class="fas fa-phone"></i>
-                    Phone Number
-                    <span class="required">*</span>
-                </label>
-                <div class="input-icon">
-                    <i class="fas fa-phone"></i>
-                    {{ form.phone|add_class:"form-control"|attr:"placeholder:+880 1234-567890"|attr:"type:tel" }}
-                </div>
-                {% if form.phone.errors %}
-                <div class="error-message">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <span>{{ form.phone.errors.0 }}</span>
-                </div>
-                {% else %}
-                <div class="form-help">
-                    <i class="fas fa-info-circle"></i>
-                    <span>Include country code for international numbers</span>
-                </div>
-                {% endif %}
-            </div>
+<!-- Phone Field -->
+<div class="form-group">
+    <label for="id_phone" class="form-label">
+        <i class="fas fa-phone"></i> Phone Number <span class="required">*</span>
+    </label>
+    <div class="input-icon">
+        {{ form.phone|add_class:"form-control"|attr:"placeholder:+880 1234-567890"|attr:"type:tel"|attr:"autocomplete:off" }}
+        <i class="fas fa-phone"></i>
+    </div>
+    {% if form.phone.errors %}
+        <div class="error-message">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>{{ form.phone.errors.0 }}</span>
+        </div>
+    {% else %}
+        <div class="form-help">
+            <i class="fas fa-info-circle"></i>
+            <span>Include country code for international numbers</span>
+        </div>
+    {% endif %}
+</div>
 
-            <!-- Email Field -->
-            <div class="form-group">
-                <label for="id_email" class="form-label">
-                    <i class="fas fa-envelope"></i>
-                    Email Address
-                    <span class="required">*</span>
-                </label>
-                <div class="input-icon">
-                    <i class="fas fa-envelope"></i>
-                    {{ form.email|add_class:"form-control"|attr:"placeholder:example@email.com"|attr:"type:email" }}
-                </div>
-                {% if form.email.errors %}
-                <div class="error-message">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <span>{{ form.email.errors.0 }}</span>
-                </div>
-                {% else %}
-                <div class="form-help">
-                    <i class="fas fa-info-circle"></i>
-                    <span>We'll never share this email with anyone</span>
-                </div>
-                {% endif %}
-            </div>
+<!-- Email Field -->
+<div class="form-group">
+    <label for="id_email" class="form-label">
+        <i class="fas fa-envelope"></i> Email Address <span class="required">*</span>
+    </label>
+    <div class="input-icon">
+        {{ form.email|add_class:"form-control"|attr:"placeholder:example@email.com"|attr:"type:email"|attr:"autocomplete:off" }}
+        <i class="fas fa-envelope"></i>
+    </div>
+    {% if form.email.errors %}
+        <div class="error-message">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>{{ form.email.errors.0 }}</span>
+        </div>
+    {% else %}
+        <div class="form-help">
+            <i class="fas fa-info-circle"></i>
+            <span>We'll never share this email with anyone</span>
+        </div>
+    {% endif %}
+</div>
 
             <!-- Form Actions -->
             <div class="form-actions">
                 <a href="{% url 'contact_list' %}" class="btn btn-secondary">
                     <i class="fas fa-times"></i>
-                    Cancel
+                    <span>Cancel</span>
                 </a>
                 <button type="submit" class="btn btn-primary" id="submitBtn">
                     <i class="fas {% if form.instance.pk %}fa-save{% else %}fa-plus{% endif %}"></i>
-                    {% if form.instance.pk %}Update Contact{% else %}Add Contact{% endif %}
+                    <span>{% if form.instance.pk %}Update Contact{% else %}Add Contact{% endif %}</span>
                 </button>
             </div>
         </form>
     </div>
 
     {% if form.instance.pk %}
-    <div style="text-align: center; margin-top: 1.5rem;">
-        <a href="{% url 'contact_delete' form.instance.pk %}" class="text-danger"
-            style="text-decoration: none; font-size: 0.9rem;">
-            <i class="fas fa-trash"></i> Delete this contact
+    <div class="delete-link">
+        <a href="{% url 'contact_delete' form.instance.pk %}"
+            onclick="return confirm('⚠️ Are you sure you want to delete this contact?\n\nThis action cannot be undone!')">
+            <i class="fas fa-trash-alt"></i>
+            <span>Delete this contact</span>
         </a>
     </div>
     {% endif %}
@@ -442,13 +715,19 @@
     document.addEventListener('DOMContentLoaded', function () {
         const form = document.getElementById('contactForm');
         const submitBtn = document.getElementById('submitBtn');
+        const inputs = document.querySelectorAll('.form-control');
 
         // Add is-invalid class to fields with errors
         const errorFields = document.querySelectorAll('.error-message');
         errorFields.forEach(error => {
-            const input = error.previousElementSibling.querySelector('.form-control');
+            const formGroup = error.closest('.form-group');
+            const input = formGroup.querySelector('.form-control');
             if (input) {
                 input.classList.add('is-invalid');
+                // Focus first error field
+                if (!document.activeElement || document.activeElement === document.body) {
+                    input.focus();
+                }
             }
         });
 
@@ -456,17 +735,35 @@
         form.addEventListener('submit', function (e) {
             submitBtn.disabled = true;
             submitBtn.classList.add('btn-loading');
+
+            // Re-enable after 5 seconds as fallback
+            setTimeout(() => {
+                if (submitBtn.disabled) {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('btn-loading');
+                }
+            }, 5000);
         });
 
         // Remove error styling on input
-        const inputs = document.querySelectorAll('.form-control');
         inputs.forEach(input => {
             input.addEventListener('input', function () {
                 this.classList.remove('is-invalid');
-                const errorMsg = this.closest('.form-group').querySelector('.error-message');
+                const formGroup = this.closest('.form-group');
+                const errorMsg = formGroup.querySelector('.error-message');
                 if (errorMsg) {
                     errorMsg.style.display = 'none';
                 }
+            });
+
+            // Add focus animation
+            input.addEventListener('focus', function () {
+                this.closest('.form-group').style.transform = 'scale(1.02)';
+                this.closest('.form-group').style.transition = 'transform 0.3s ease';
+            });
+
+            input.addEventListener('blur', function () {
+                this.closest('.form-group').style.transform = 'scale(1)';
             });
         });
 
@@ -475,14 +772,65 @@
         if (phoneInput) {
             phoneInput.addEventListener('blur', function () {
                 let value = this.value.replace(/\D/g, '');
-                if (value.length > 0 && !value.startsWith('0') && !value.startsWith('+')) {
-                    // Auto-add country code if not present
+                if (value.length > 0 && !this.value.startsWith('+')) {
+                    // Auto-add Bangladesh country code if it's 11 digits starting with 1
                     if (value.length === 11 && value.startsWith('1')) {
                         this.value = '+880' + value;
                     }
                 }
             });
         }
+
+        // Email validation helper
+        const emailInput = document.getElementById('id_email');
+        if (emailInput) {
+            emailInput.addEventListener('blur', function () {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (this.value && !emailRegex.test(this.value)) {
+                    this.classList.add('is-invalid');
+                    let errorMsg = this.closest('.form-group').querySelector('.error-message');
+                    if (!errorMsg) {
+                        errorMsg = document.createElement('div');
+                        errorMsg.className = 'error-message';
+                        errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i><span>Please enter a valid email address</span>';
+                        this.closest('.input-icon').after(errorMsg);
+                    }
+                }
+            });
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function (e) {
+            // Ctrl/Cmd + S to save
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                form.requestSubmit();
+            }
+
+            // Escape to cancel
+            if (e.key === 'Escape') {
+                window.location.href = "{% url 'contact_list' %}";
+            }
+        });
+
+        // Auto-save to localStorage (draft)
+        let autoSaveTimeout;
+        inputs.forEach(input => {
+            input.addEventListener('input', function () {
+                clearTimeout(autoSaveTimeout);
+                autoSaveTimeout = setTimeout(() => {
+                    const formData = {
+                        name: document.getElementById('id_name').value,
+                        phone: document.getElementById('id_phone').value,
+                        email: document.getElementById('id_email').value,
+                        timestamp: Date.now()
+                    };
+                    // Note: localStorage is not available in Claude artifacts
+                    // This is a placeholder for when used in production
+                    console.log('Auto-save would save:', formData);
+                }, 2000);
+            });
+        });
     });
 </script>
 
