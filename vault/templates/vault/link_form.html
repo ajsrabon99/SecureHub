@@ -6,670 +6,765 @@
 {% endblock %}
 
 {% block content %}
+
 <style>
+  /* Form Container */
+  .form-container {
+    max-width: 700px;
+    margin: 0 auto;
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  /* Form Header */
+  .form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .form-icon {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 12px 35px rgba(240, 147, 251, 0.4);
+    position: relative;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .form-icon::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    opacity: 0.3;
+    animation: ripple 2s ease-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  @keyframes ripple {
+    0% { transform: scale(1); opacity: 0.3; }
+    100% { transform: scale(1.4); opacity: 0; }
+  }
+
+  .form-icon i {
+    font-size: 2.75rem;
+    color: white;
+    position: relative;
+    z-index: 1;
+  }
+
+  .form-header h2 {
+    font-size: 2.25rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.75rem;
+  }
+
+  .form-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  /* Info Notice */
+  .info-notice {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.1) 100%);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    animation: slideInDown 0.6s ease-out 0.2s backwards;
+  }
+
+  .info-notice i {
+    font-size: 1.75rem;
+    color: #3b82f6;
+    flex-shrink: 0;
+  }
+
+  .info-notice-content p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .info-notice-content strong {
+    color: var(--text-primary);
+  }
+
+  /* Form Card */
+  .form-card {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.8) 100%);
+    border-radius: 24px;
+    padding: 3rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.6s ease-out 0.3s backwards;
+  }
+
+  .form-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #f093fb 0%, #f5576c 50%, #f093fb 100%);
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  /* Alert */
+  .alert-danger {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    animation: shake 0.4s ease-in-out;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+
+  /* Form Group */
+  .form-group {
+    margin-bottom: 2rem;
+  }
+
+  /* Form Label */
+  .form-label {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .form-label i {
+    font-size: 1.1rem;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .form-label .required {
+    color: #ef4444;
+    margin-left: 0.25rem;
+    font-size: 1.2rem;
+  }
+
+  /* Form Control */
+  .form-control {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: 2px solid rgba(148, 163, 184, 0.2);
+    border-radius: 14px;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(18, 40, 74, 0.5);
+    color: var(--text-primary);
+    box-sizing: border-box;
+  }
+
+  .form-control::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.6;
+  }
+
+  .form-control:hover:not(:focus) {
+    border-color: rgba(148, 163, 184, 0.4);
+    background: rgba(15, 23, 42, 0.7);
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #f093fb;
+    background: rgba(24, 41, 81, 0.9);
+    box-shadow: 0 0 0 4px rgba(240, 147, 251, 0.15), 0 8px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+    color: white;
+  }
+
+  .form-control.is-invalid {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.05);
+  }
+
+  textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  /* Error & Help Messages */
+  .error-message {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    color: #ef4444;
+    font-size: 0.9rem;
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 10px;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    animation: shake 0.4s ease-in-out;
+  }
+
+  .form-help {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-top: 0.75rem;
+    padding-left: 0.25rem;
+  }
+
+  .form-help i {
+    color: #f093fb;
+    font-size: 0.9rem;
+  }
+
+  /* Category Selector */
+  .category-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+  }
+
+  .category-chip {
+    padding: 0.75rem 1rem;
+    background: rgba(240, 147, 251, 0.1);
+    border: 1px solid rgba(240, 147, 251, 0.2);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .category-chip i {
+    color: #f093fb;
+    font-size: 1rem;
+  }
+
+  .category-chip:hover {
+    background: rgba(240, 147, 251, 0.2);
+    border-color: rgba(240, 147, 251, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(240, 147, 251, 0.3);
+  }
+
+  .category-chip.selected {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    border-color: transparent;
+    color: white;
+  }
+
+  .category-chip.selected i {
+    color: white;
+  }
+
+  /* Form Actions */
+  .form-actions {
+    display: flex;
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
+  }
+
+  /* Buttons */
+  .btn {
+    flex: 1;
+    padding: 1.125rem 2rem;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .btn:hover::before {
+    opacity: 1;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    box-shadow: 0 8px 24px rgba(240, 147, 251, 0.4);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(240, 147, 251, 0.5);
+    color: white;
+  }
+
+  .btn-secondary {
+    background: rgba(148, 163, 184, 0.1);
+    color: var(--text-primary);
+    border: 2px solid rgba(148, 163, 184, 0.2);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(148, 163, 184, 0.2);
+    border-color: rgba(148, 163, 184, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+
+  /* Delete Link */
+  .text-danger {
+    color: #ef4444;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    background: rgba(239, 68, 68, 0.05);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    margin-top: 1.5rem;
+  }
+
+  .text-danger:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
     .form-container {
-        max-width: 700px;
-        margin: 0 auto;
+      padding: 0 1rem;
     }
 
-    .form-header {
-        text-align: center;
-        margin-bottom: 2.5rem;
-    }
-
-    .form-icon {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 1.5rem;
-        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
-    }
-
-    .form-icon i {
-        font-size: 2.5rem;
-        color: white;
+    .form-card {
+      padding: 2rem 1.5rem;
+      border-radius: 20px;
     }
 
     .form-header h2 {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #1e293b;
-        margin-bottom: 0.5rem;
+      font-size: 1.75rem;
     }
 
-    .form-header p {
-        color: #64748b;
-        font-size: 1rem;
+    .form-icon {
+      width: 70px;
+      height: 70px;
     }
 
-    .info-notice {
-        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-        border: 1px solid #93c5fd;
-        border-radius: 0.75rem;
-        padding: 1rem 1.25rem;
-        margin-bottom: 2rem;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-
-    .info-notice i {
-        color: #1e40af;
-        font-size: 1.5rem;
-    }
-
-    .info-notice-content p {
-        margin: 0;
-        color: #1e3a8a;
-        font-size: 0.875rem;
-        font-weight: 500;
-    }
-
-    .form-card {
-        background: white;
-        border-radius: 1rem;
-        padding: 2.5rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        border: 1px solid #e2e8f0;
-    }
-
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-
-    .form-label {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-weight: 600;
-        color: #1e293b;
-        margin-bottom: 0.5rem;
-        font-size: 0.95rem;
-    }
-
-    .form-label i {
-        color: #10b981;
-        font-size: 1rem;
-    }
-
-    .form-label .required {
-        color: #ef4444;
-        margin-left: 0.25rem;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 0.875rem 1rem;
-        border: 2px solid #e2e8f0;
-        border-radius: 0.5rem;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-        background-color: #f8fafc;
-    }
-
-    .form-control:focus {
-        outline: none;
-        border-color: #10b981;
-        background-color: white;
-        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
-    }
-
-    .form-control:hover:not(:focus) {
-        border-color: #cbd5e1;
-    }
-
-    .form-control.is-invalid {
-        border-color: #ef4444;
-        background-color: #fef2f2;
-    }
-
-    .form-control.is-invalid:focus {
-        box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
-    }
-
-    textarea.form-control {
-        min-height: 100px;
-        resize: vertical;
-    }
-
-    .error-message {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: #ef4444;
-        font-size: 0.875rem;
-        margin-top: 0.5rem;
-    }
-
-    .error-message i {
-        font-size: 0.875rem;
-    }
-
-    .form-help {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: #64748b;
-        font-size: 0.875rem;
-        margin-top: 0.5rem;
-    }
-
-    .form-help i {
-        color: #94a3b8;
-    }
-
-    .input-icon {
-        position: relative;
-    }
-
-    .input-icon i {
-        position: absolute;
-        left: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #94a3b8;
-        pointer-events: none;
-    }
-
-    .input-icon .form-control {
-        padding-left: 3rem;
-    }
-
-    .url-preview {
-        margin-top: 0.75rem;
-        padding: 1rem;
-        background: #f0fdf4;
-        border: 1px solid #d1fae5;
-        border-radius: 0.5rem;
-        display: none;
-    }
-
-    .url-preview.show {
-        display: block;
-    }
-
-    .url-preview-title {
-        font-size: 0.8rem;
-        color: #065f46;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .url-preview-link {
-        color: #10b981;
-        text-decoration: none;
-        word-break: break-all;
-        font-size: 0.875rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .url-preview-link:hover {
-        text-decoration: underline;
-    }
-
-    .url-validation {
-        margin-top: 0.75rem;
-        padding: 0.75rem 1rem;
-        border-radius: 0.5rem;
-        display: none;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.875rem;
-    }
-
-    .url-validation.valid {
-        display: flex;
-        background: #d1fae5;
-        color: #065f46;
-        border: 1px solid #10b981;
-    }
-
-    .url-validation.invalid {
-        display: flex;
-        background: #fee2e2;
-        color: #991b1b;
-        border: 1px solid #ef4444;
-    }
-
-    .url-validation i {
-        font-size: 1rem;
-    }
-
-    .category-selector {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-top: 0.75rem;
-    }
-
-    .category-chip {
-        padding: 0.5rem 1rem;
-        border-radius: 2rem;
-        border: 2px solid #e2e8f0;
-        background: white;
-        color: #64748b;
-        font-size: 0.875rem;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .category-chip:hover {
-        border-color: #10b981;
-        color: #10b981;
-        background: #f0fdf4;
-    }
-
-    .category-chip.selected {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        color: white;
-        border-color: #10b981;
-    }
-
-    .category-chip i {
-        font-size: 0.75rem;
+    .form-icon i {
+      font-size: 2.25rem;
     }
 
     .form-actions {
-        display: flex;
-        gap: 1rem;
-        margin-top: 2rem;
-        padding-top: 2rem;
-        border-top: 1px solid #e2e8f0;
+      flex-direction: column-reverse;
     }
 
     .btn {
-        flex: 1;
-        padding: 0.875rem 1.5rem;
-        border-radius: 0.5rem;
-        font-weight: 600;
-        font-size: 1rem;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        transition: all 0.3s ease;
-        border: none;
-        cursor: pointer;
+      width: 100%;
     }
 
-    .btn-primary {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        color: white;
-        box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
+    .category-selector {
+      grid-template-columns: repeat(2, 1fr);
     }
 
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
-        color: white;
+    .info-notice {
+      flex-direction: column;
+      text-align: center;
     }
+  }
 
-    .btn-secondary {
-        background-color: #f8fafc;
-        color: #64748b;
-        border: 2px solid #e2e8f0;
-    }
-
-    .btn-secondary:hover {
-        background-color: #e2e8f0;
-        color: #475569;
-        transform: translateY(-2px);
-    }
-
-    .btn:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-
-    .quick-links {
-        margin-top: 1rem;
-        padding: 1rem;
-        background: #f8fafc;
-        border-radius: 0.5rem;
-        border: 1px solid #e2e8f0;
-    }
-
-    .quick-links-title {
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: #64748b;
-        margin-bottom: 0.75rem;
-    }
-
-    .quick-links-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: 0.5rem;
-    }
-
-    .quick-link-btn {
-        padding: 0.5rem;
-        background: white;
-        border: 1px solid #e2e8f0;
-        border-radius: 0.375rem;
-        font-size: 0.8rem;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.375rem;
-        color: #64748b;
-    }
-
-    .quick-link-btn:hover {
-        background: #10b981;
-        color: white;
-        border-color: #10b981;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .form-card {
-            padding: 1.5rem;
-        }
-
-        .form-header h2 {
-            font-size: 1.5rem;
-        }
-
-        .form-icon {
-            width: 60px;
-            height: 60px;
-        }
-
-        .form-icon i {
-            font-size: 2rem;
-        }
-
-        .form-actions {
-            flex-direction: column;
-        }
-
-        .btn {
-            width: 100%;
-        }
-
-        .category-selector {
-            flex-direction: column;
-        }
-
-        .quick-links-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    @keyframes slideUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+  @media (max-width: 480px) {
+    .form-header h2 {
+      font-size: 1.5rem;
     }
 
     .form-card {
-        animation: slideUp 0.4s ease-out;
+      padding: 1.75rem 1.25rem;
     }
+
+    .form-icon {
+      width: 60px;
+      height: 60px;
+    }
+
+    .form-icon i {
+      font-size: 2rem;
+    }
+
+    .category-selector {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
+
 <div class="form-container">
-    <div class="form-header">
-        <div class="form-icon">
-            <i class="fas {% if form.instance.pk %}fa-edit{% else %}fa-link{% endif %}"></i>
-        </div>
-        <h2>
-            {% if form.instance.pk %}Edit Link{% else %}Add New Link{% endif %}
-        </h2>
-        <p>
-            {% if form.instance.pk %}Update your bookmark information{% else %}Save a new link to your collection{% endif %}
-        </p>
+  <div class="form-header">
+    <div class="form-icon">
+      <i class="fas {% if form.instance.pk %}fa-edit{% else %}fa-link{% endif %}"></i>
     </div>
+    <h2>
+      {% if form.instance.pk %}Edit Link{% else %}Add New Link{% endif %}
+    </h2>
+    <p>
+      {% if form.instance.pk %}Update your bookmark information{% else %}Save a new link to your collection{% endif %}
+    </p>
+  </div>
 
-    <div class="info-notice">
-        <i class="fas fa-lightbulb"></i>
-        <div class="info-notice-content">
-            <p><strong>💡 Pro Tip:</strong> Add descriptive titles to easily find your links later. You can organize
-                them by categories too!</p>
-        </div>
+  <div class="info-notice">
+    <i class="fas fa-lightbulb"></i>
+    <div class="info-notice-content">
+      <p><strong>Pro Tip:</strong> Add descriptive titles to easily find your links later. You can organize them by categories too!</p>
     </div>
+  </div>
 
-    <div class="form-card">
-        {% if form.non_field_errors %}
-        <div class="alert alert-danger" style="background: #fee2e2; border: 1px solid #fecaca; color: #991b1b; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
-            <i class="fas fa-exclamation-circle"></i>
-            <div>
-                {% for error in form.non_field_errors %}
-                    {{ error }}
-                {% endfor %}
-            </div>
+  <div class="form-card">
+    {% if form.non_field_errors %}
+    <div class="alert-danger">
+      <i class="fas fa-exclamation-circle"></i>
+      <div>
+        {% for error in form.non_field_errors %}
+        {{ error }}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <form method="post" id="linkForm" autocomplete="off">
+      {% csrf_token %}
+
+      <!-- Title Field -->
+      <div class="form-group">
+        <label for="id_title" class="form-label">
+          <i class="fas fa-heading"></i>
+          Link Title
+          <span class="required">*</span>
+        </label>
+        <input type="text" name="title" id="id_title" class="form-control" 
+               placeholder="e.g., My GitHub Profile, Netflix, Google Drive" 
+               maxlength="200"
+               value="{{ form.title.value|default_if_none:'' }}"
+               autocomplete="off">
+        {% if form.title.errors %}
+        <div class="error-message">
+          <i class="fas fa-exclamation-circle"></i>
+          <span>{{ form.title.errors.0 }}</span>
+        </div>
+        {% else %}
+        <div class="form-help">
+          <i class="fas fa-info-circle"></i>
+          <span>Give your link a memorable name</span>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- URL Field -->
+      <div class="form-group">
+        <label for="id_url" class="form-label">
+          <i class="fas fa-globe"></i>
+          URL Address
+          <span class="required">*</span>
+        </label>
+        <input type="url" name="url" id="id_url" class="form-control" 
+               placeholder="https://example.com" 
+               value="{{ form.url.value|default_if_none:'' }}"
+               autocomplete="off">
+        {% if form.url.errors %}
+        <div class="error-message">
+          <i class="fas fa-exclamation-circle"></i>
+          <span>{{ form.url.errors.0 }}</span>
+        </div>
+        {% endif %}
+        <div class="form-help">
+          <i class="fas fa-info-circle"></i>
+          <span>Enter the complete URL including https://</span>
+        </div>
+      </div>
+
+      <!-- Category Field -->
+      <div class="form-group">
+        <label for="id_category" class="form-label">
+          <i class="fas fa-tag"></i>
+          Category (Optional)
+        </label>
+        <input type="text" name="category" id="id_category" class="form-control"
+               placeholder="e.g., Work, Social Media, Shopping, Learning"
+               value="{{ form.category.value|default_if_none:'' }}"
+               autocomplete="off">
+        {% if form.category.errors %}
+        <div class="error-message">
+          <i class="fas fa-exclamation-circle"></i>
+          <span>{{ form.category.errors.0 }}</span>
         </div>
         {% endif %}
 
-        <form method="post" id="linkForm">
-            {% csrf_token %}
+        <!-- Quick Category Selection -->
+        <div class="category-selector" id="categorySelector">
+          <div class="category-chip" onclick="selectCategory('Work')">
+            <i class="fas fa-briefcase"></i> Work
+          </div>
+          <div class="category-chip" onclick="selectCategory('Social Media')">
+            <i class="fas fa-users"></i> Social Media
+          </div>
+          <div class="category-chip" onclick="selectCategory('Shopping')">
+            <i class="fas fa-shopping-cart"></i> Shopping
+          </div>
+          <div class="category-chip" onclick="selectCategory('Learning')">
+            <i class="fas fa-graduation-cap"></i> Learning
+          </div>
+          <div class="category-chip" onclick="selectCategory('Entertainment')">
+            <i class="fas fa-film"></i> Entertainment
+          </div>
+          <div class="category-chip" onclick="selectCategory('News')">
+            <i class="fas fa-newspaper"></i> News
+          </div>
+        </div>
+        <div class="form-help" style="margin-top: 0.75rem;">
+          <i class="fas fa-info-circle"></i>
+          <span>Choose a category or create your own</span>
+        </div>
+      </div>
 
-            <!-- Title Field -->
-            <div class="form-group">
-                <label for="id_title" class="form-label"><i class="fas fa-heading"></i> Link Title <span class="required">*</span></label>
-                <input type="text" name="title" id="id_title" class="form-control" 
-                       placeholder="e.g., My GitHub Profile, Netflix, Google Drive" 
-                       maxlength="200"
-                       value="{{ form.title.value|default_if_none:'' }}">
-                {% if form.title.errors %}
-                <div class="error-message"><i class="fas fa-exclamation-circle"></i> <span>{{ form.title.errors.0 }}</span></div>
-                {% else %}
-                <div class="form-help"><i class="fas fa-info-circle"></i> <span>Give your link a memorable name</span></div>
-                {% endif %}
-            </div>
-
-            <!-- URL Field -->
-            <div class="form-group">
-                <label for="id_url" class="form-label"><i class="fas fa-globe"></i> URL Address <span class="required">*</span></label>
-                <input type="url" name="url" id="id_url" class="form-control" 
-                       placeholder="https://example.com" 
-                       value="{{ form.url.value|default_if_none:'' }}">
-                {% if form.url.errors %}
-                <div class="error-message"><i class="fas fa-exclamation-circle"></i> <span>{{ form.url.errors.0 }}</span></div>
-                {% endif %}
-                <div class="form-help"><i class="fas fa-info-circle"></i> <span>Enter the complete URL including https://</span></div>
-            </div>
-
-            <!-- Category Field -->
-            <div class="form-group">
-                <label for="id_category" class="form-label"><i class="fas fa-tag"></i> Category (Optional)</label>
-                <input type="text" name="category" id="id_category" class="form-control"
-                       placeholder="e.g., Work, Social Media, Shopping, Learning"
-                       value="{{ form.category.value|default_if_none:'' }}">
-                {% if form.category.errors %}
-                <div class="error-message"><i class="fas fa-exclamation-circle"></i> <span>{{ form.category.errors.0 }}</span></div>
-                {% endif %}
-
-                <!-- Quick Category Selection -->
-                <div class="category-selector" id="categorySelector">
-                    <div class="category-chip" onclick="document.getElementById('id_category').value='Work'"><i class="fas fa-briefcase"></i> Work</div>
-                    <div class="category-chip" onclick="document.getElementById('id_category').value='Social Media'"><i class="fas fa-users"></i> Social Media</div>
-                    <div class="category-chip" onclick="document.getElementById('id_category').value='Shopping'"><i class="fas fa-shopping-cart"></i> Shopping</div>
-                    <div class="category-chip" onclick="document.getElementById('id_category').value='Learning'"><i class="fas fa-graduation-cap"></i> Learning</div>
-                    <div class="category-chip" onclick="document.getElementById('id_category').value='Entertainment'"><i class="fas fa-film"></i> Entertainment</div>
-                    <div class="category-chip" onclick="document.getElementById('id_category').value='News'"><i class="fas fa-newspaper"></i> News</div>
-                </div>
-                <div class="form-help" style="margin-top: 0.75rem;"><i class="fas fa-info-circle"></i> <span>Choose a category or create your own</span></div>
-            </div>
-
-            <!-- Notes Field -->
-            <div class="form-group">
-                <label for="id_notes" class="form-label"><i class="fas fa-sticky-note"></i> Notes (Optional)</label>
-                <textarea name="notes" id="id_notes" class="form-control" rows="3"
-                          placeholder="Add any additional notes about this link...">{{ form.notes.value|default_if_none:'' }}</textarea>
-                {% if form.notes.errors %}
-                <div class="error-message"><i class="fas fa-exclamation-circle"></i> <span>{{ form.notes.errors.0 }}</span></div>
-                {% else %}
-                <div class="form-help"><i class="fas fa-info-circle"></i> <span>Optional description or reminder about this link</span></div>
-                {% endif %}
-            </div>
-
-            <!-- Form Actions -->
-            <div class="form-actions">
-                <a href="{% url 'link_list' %}" class="btn btn-secondary"><i class="fas fa-times"></i> Cancel</a>
-                <button type="submit" class="btn btn-primary" id="submitBtn">
-                    <i class="fas {% if form.instance.pk %}fa-save{% else %}fa-plus{% endif %}"></i>
-                    {% if form.instance.pk %}Update Link{% else %}Save Link{% endif %}
-                </button>
-            </div>
-        </form>
-
-        {% if form.instance.pk %}
-        <div style="text-align: center; margin-top: 1.5rem;">
-            <a href="{% url 'link_delete' form.instance.pk %}" class="text-danger"
-               style="text-decoration: none; font-size: 0.9rem;"
-               onclick="return confirm('Are you sure you want to delete this link?')">
-                <i class="fas fa-trash"></i> Delete this link
-            </a>
+      <!-- Notes Field -->
+      <div class="form-group">
+        <label for="id_notes" class="form-label">
+          <i class="fas fa-sticky-note"></i>
+          Notes (Optional)
+        </label>
+        <textarea name="notes" id="id_notes" class="form-control" rows="4"
+                  placeholder="Add any additional notes about this link..."
+                  autocomplete="off">{{ form.notes.value|default_if_none:'' }}</textarea>
+        {% if form.notes.errors %}
+        <div class="error-message">
+          <i class="fas fa-exclamation-circle"></i>
+          <span>{{ form.notes.errors.0 }}</span>
+        </div>
+        {% else %}
+        <div class="form-help">
+          <i class="fas fa-info-circle"></i>
+          <span>Optional description or reminder about this link</span>
         </div>
         {% endif %}
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <a href="{% url 'link_list' %}" class="btn btn-secondary">
+          <i class="fas fa-times"></i>
+          <span>Cancel</span>
+        </a>
+        <button type="submit" class="btn btn-primary" id="submitBtn">
+          <i class="fas {% if form.instance.pk %}fa-save{% else %}fa-plus{% endif %}"></i>
+          <span>{% if form.instance.pk %}Update Link{% else %}Save Link{% endif %}</span>
+        </button>
+      </div>
+    </form>
+
+    {% if form.instance.pk %}
+    <div style="text-align: center;">
+      <a href="{% url 'link_delete' form.instance.pk %}" class="text-danger"
+         onclick="return confirm('⚠️ Are you sure you want to delete this link?\n\nThis action cannot be undone!')">
+        <i class="fas fa-trash-alt"></i>
+        <span>Delete this link</span>
+      </a>
     </div>
+    {% endif %}
+  </div>
 </div>
 
 <script>
-    // URL validation and preview
-    function validateUrl(url) {
-        try {
-            const urlObj = new URL(url);
-            return urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
-        } catch {
-            return false;
-        }
+  // Category selection with visual feedback
+  function selectCategory(category) {
+    const categoryInput = document.getElementById('id_category');
+    const chips = document.querySelectorAll('.category-chip');
+
+    // Remove selected class from all chips
+    chips.forEach(chip => chip.classList.remove('selected'));
+
+    // If clicking same category, clear it
+    if (categoryInput.value === category) {
+      categoryInput.value = '';
+    } else {
+      categoryInput.value = category;
+      // Add selected class to clicked chip
+      event.target.closest('.category-chip').classList.add('selected');
+    }
+  }
+
+  // Auto-add https:// if missing
+  function autoCompleteUrl() {
+    const urlInput = document.getElementById('id_url');
+    let url = urlInput.value.trim();
+
+    if (url && !url.match(/^https?:\/\//i)) {
+      urlInput.value = 'https://' + url;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const urlInput = document.getElementById('id_url');
+    const categoryInput = document.getElementById('id_category');
+    const form = document.getElementById('linkForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // URL auto-complete on blur
+    if (urlInput) {
+      urlInput.addEventListener('blur', autoCompleteUrl);
     }
 
-    function updateUrlPreview() {
-        const urlInput = document.getElementById('urlInput');
-        const urlPreview = document.getElementById('urlPreview');
-        const previewLink = document.getElementById('previewLink');
-        const previewUrl = document.getElementById('previewUrl');
-        const urlValidation = document.getElementById('urlValidation');
-        const url = urlInput.value.trim();
-
-        if (url.length === 0) {
-            urlPreview.classList.remove('show');
-            urlValidation.className = 'url-validation';
-            return;
+    // Highlight selected category on load
+    if (categoryInput && categoryInput.value) {
+      const chips = document.querySelectorAll('.category-chip');
+      chips.forEach(chip => {
+        const chipText = chip.textContent.trim();
+        if (chipText === categoryInput.value) {
+          chip.classList.add('selected');
         }
-
-        const isValid = validateUrl(url);
-
-        if (isValid) {
-            urlPreview.classList.add('show');
-            previewLink.href = url;
-            previewUrl.textContent = url;
-
-            urlValidation.className = 'url-validation valid';
-            urlValidation.innerHTML = '<i class="fas fa-check-circle"></i> Valid URL format';
-        } else {
-            urlPreview.classList.remove('show');
-            urlValidation.className = 'url-validation invalid';
-            urlValidation.innerHTML = '<i class="fas fa-times-circle"></i> Invalid URL format (must start with http:// or https://)';
-        }
+      });
     }
 
-    // Category selection
-    function selectCategory(category) {
-        const categoryInput = document.getElementById('categoryInput');
-        const chips = document.querySelectorAll('.category-chip');
-
-        // Remove selected class from all chips
-        chips.forEach(chip => chip.classList.remove('selected'));
-
-        // If clicking same category, clear it
-        if (categoryInput.value === category) {
-            categoryInput.value = '';
-        } else {
-            categoryInput.value = category;
-            // Add selected class to clicked chip
-            event.target.closest('.category-chip').classList.add('selected');
+    // Form submission with loading state
+    form.addEventListener('submit', function(e) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Saving...</span>';
+      
+      // Re-enable after 5 seconds as fallback
+      setTimeout(() => {
+        if (submitBtn.disabled) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fas fa-save"></i> <span>Save Link</span>';
         }
-    }
-
-    // Auto-add https:// if missing
-    function autoCompleteUrl() {
-        const urlInput = document.getElementById('urlInput');
-        let url = urlInput.value.trim();
-
-        if (url && !url.match(/^https?:\/\//i)) {
-            urlInput.value = 'https://' + url;
-            updateUrlPreview();
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const urlInput = document.getElementById('urlInput');
-        const categoryInput = document.getElementById('categoryInput');
-        const form = document.getElementById('linkForm');
-        const submitBtn = document.getElementById('submitBtn');
-
-        // URL input listeners
-        if (urlInput) {
-            urlInput.addEventListener('input', updateUrlPreview);
-            urlInput.addEventListener('blur', autoCompleteUrl);
-
-            // Check initial value if editing
-            if (urlInput.value) {
-                updateUrlPreview();
-            }
-        }
-
-        // Highlight selected category on load
-        if (categoryInput && categoryInput.value) {
-            const chips = document.querySelectorAll('.category-chip');
-            chips.forEach(chip => {
-                if (chip.textContent.trim().includes(categoryInput.value)) {
-                    chip.classList.add('selected');
-                }
-            });
-        }
-
-        // Form submission
-        form.addEventListener('submit', function (e) {
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-        });
-
-        // Add error styling to fields with errors
-        const errorFields = document.querySelectorAll('.error-message');
-        errorFields.forEach(error => {
-            const input = error.previousElementSibling.querySelector('.form-control');
-            if (input) {
-                input.classList.add('is-invalid');
-            }
-        });
-
-        // Remove error styling on input
-        const inputs = document.querySelectorAll('.form-control');
-        inputs.forEach(input => {
-            input.addEventListener('input', function () {
-                this.classList.remove('is-invalid');
-                const errorMsg = this.closest('.form-group').querySelector('.error-message');
-                if (errorMsg) {
-                    errorMsg.style.display = 'none';
-                }
-            });
-        });
+      }, 5000);
     });
+
+    // Add error styling to fields with errors
+    const errorFields = document.querySelectorAll('.error-message');
+    errorFields.forEach(error => {
+      const formGroup = error.closest('.form-group');
+      const input = formGroup.querySelector('.form-control');
+      if (input && (!document.activeElement || document.activeElement === document.body)) {
+        input.classList.add('is-invalid');
+        input.focus();
+      }
+    });
+
+    // Remove error styling on input
+    const inputs = document.querySelectorAll('.form-control');
+    inputs.forEach(input => {
+      input.addEventListener('input', function() {
+        this.classList.remove('is-invalid');
+        const formGroup = this.closest('.form-group');
+        const errorMsg = formGroup.querySelector('.error-message');
+        if (errorMsg) {
+          errorMsg.style.display = 'none';
+        }
+      });
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      // Ctrl/Cmd + S to save
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        form.requestSubmit();
+      }
+      
+      // Escape to cancel
+      if (e.key === 'Escape') {
+        window.location.href = "{% url 'link_list' %}";
+      }
+    });
+  });
 </script>
 
 {% endblock %}

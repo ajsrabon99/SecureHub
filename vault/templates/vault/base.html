@@ -97,7 +97,7 @@
     }
 
     .nav-item {
-      padding-left: 130px;
+      padding-left: 100px;
     }
 
     .navbar-toggler {
@@ -473,6 +473,12 @@
         </button>
 
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}" data-page="home">
+              <i class="fas fa-home"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'contact_list' %}" data-page="contacts">
               <i class="fas fa-address-book"></i>
