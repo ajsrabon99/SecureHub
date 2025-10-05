@@ -163,8 +163,8 @@ def signup_view(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # Signup এর সাথে সাথে login
-            return redirect('home')
+            # Signup এর পর সরাসরি login না করিয়ে, login পেজে পাঠানো হবে
+            return redirect('login')
     else:
         form = UserCreationForm()
     return render(request, 'vault/signup.html', {'form': form})
